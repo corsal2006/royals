@@ -39,7 +39,7 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
       color: "border-royal-gold text-royal-gold"
     },
     {
-      id: 6819,
+      id: 37052,
       name: "Naman Dhir",
       role: "Aggressive Top-Order Striker",
       team: "Mumbai Indians",
@@ -271,13 +271,19 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
                 className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-navy-900/80 hover:bg-slate-100 dark:hover:bg-navy-750 border border-slate-200 dark:border-navy-750 hover:border-royal-pink/40 cursor-pointer transition-all group"
               >
                 <div className="flex items-center space-x-3">
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold ${
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs font-bold shrink-0 ${
                     idx === 0 ? 'bg-royal-gold text-navy-950 font-black' :
                     idx === 1 ? 'bg-slate-300 text-navy-950 font-black' :
                     idx === 2 ? 'bg-amber-600 text-white font-black' : 'bg-slate-200 dark:bg-navy-750 text-slate-700 dark:text-slate-300'
                   }`}>
                     {idx + 1}
                   </div>
+                  <PlayerImage
+                    playerId={b.striker_id}
+                    name={b.striker_name}
+                    role="Batter"
+                    size="sm"
+                  />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors">
                       {b.striker_name}
@@ -328,13 +334,19 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
                 className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-navy-900/80 hover:bg-slate-100 dark:hover:bg-navy-750 border border-slate-200 dark:border-navy-750 hover:border-royal-blue/40 cursor-pointer transition-all group"
               >
                 <div className="flex items-center space-x-3">
-                  <div className={`flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold ${
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-lg text-xs font-bold shrink-0 ${
                     idx === 0 ? 'bg-royal-gold text-navy-950 font-black' :
                     idx === 1 ? 'bg-slate-300 text-navy-950 font-black' :
                     idx === 2 ? 'bg-amber-600 text-white font-black' : 'bg-slate-200 dark:bg-navy-750 text-slate-700 dark:text-slate-300'
                   }`}>
                     {idx + 1}
                   </div>
+                  <PlayerImage
+                    playerId={b.bowler_id}
+                    name={b.bowler_name}
+                    role="Bowler"
+                    size="sm"
+                  />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-royal-blue dark:group-hover:text-royal-cyan transition-colors">
                       {b.bowler_name}

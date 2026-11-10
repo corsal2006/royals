@@ -3,6 +3,7 @@ ROYAL SCOUT AI — ETL Pipeline & Match Situation Reconstructor
 -------------------------------------------------------------
 Reproducible ETL pipeline that reconstructs match situations before each delivery,
 calculates delivery-level pressure index, and prepares analytical datasets.
+Strict adherence to official cricket scoring laws and dynamic DLS rain-reduction handling.
 """
 
 import os
@@ -28,19 +29,22 @@ def load_raw_data(data_dir=RAW_DATA_DIR):
 def process_deliveries(ball_by_ball, matches):
     print("Processing deliveries and reconstructing match situations...")
     
-    # 1. Sort deliveries strictly in chronological order
-    bbb = ball_by_ball.sort_values(
-        ['match_id', 'innings', 'overid', 'over_ball_num']
-    ).reset_index(drop=True)
+    # 1. Sort deliveries strictly in chronological sequence
+    sort_cols = ['match_id', 'innings']
+    if 'innings_ball_num' in ball_by_ball.columns:
+        sort_cols.append('innings_ball_num')
+    sort_cols.extend(['overid', 'over_ball_num'])
+    
+    bbb = ball_by_ball.sort_values(sort_cols).reset_index(drop=True)
     
     # 2. Distinguish legal vs illegal deliveries
-    # In cricket, wide and overstep (no-ball) and other illegal deliveries require an extra ball to be bowled
+    # In cricket, wide and overstep (no-ball) require an extra legal delivery to be bowled
     bbb['is_illegal'] = bbb['extras_type'].isin(['wide', 'Overstep', 'other'])
     bbb['is_legal'] = ~bbb['is_illegal']
     
-    # 3. Runs calculation
-    # Batter runs = 'runs'
-    # Bowler runs conceded = runs + (1 if wide/overstep/other) + extras_2_runs (byes and legbyes excluded!)
+    # 3. Runs calculation conforming to ICC scoring laws
+    # Batter runs = 'runs' off the bat
+    # Bowler runs conceded = runs + (wide / overstep / other penalties) + extras_2_runs (byes and legbyes excluded!)
     bbb['bowler_extra'] = np.where(bbb['extras_type'].isin(['wide', 'Overstep', 'other']), 1, 0) + bbb['extras_2_runs'].fillna(0)
     bbb['bowler_runs_conceded'] = bbb['runs'] + bbb['bowler_extra']
     
@@ -53,22 +57,24 @@ def process_deliveries(ball_by_ball, matches):
     bbb['is_bowler_wkt'] = bbb['is_wicket'] & bbb['dismissal_type'].isin(bowler_dismissals)
     bbb['is_run_out'] = bbb['is_wicket'] & (bbb['dismissal_type'] == 'RunOut')
     
-    # 5. Calculate Innings 1 totals to set accurate targets for Innings 2
+    # 5. Innings 1 totals to set accurate targets for Innings 2
     inn1_totals = bbb[bbb['innings'] == 1].groupby('match_id')['team_ball_runs'].sum().to_dict()
     
-    # Build match targets and knockout context dictionary
+    # Build match targets, DLS revised overs, and knockout context dictionaries
     m_targets = {}
     m_knockouts = {}
     m_stages = {}
-    m_formats = {}
+    m_revised_inn1 = matches.set_index('match_id')['first_inn_revised_overs'].dropna().to_dict() if 'first_inn_revised_overs' in matches.columns else {}
+    m_revised_inn2 = matches.set_index('match_id')['second_inn_revised_overs'].dropna().to_dict() if 'second_inn_revised_overs' in matches.columns else {}
+    
     for idx, row in matches.iterrows():
         mid = row['match_id']
         ko = (row['knock_out'] == 1) or (str(row['stage']).lower() in ['final', 'qualifier', 'super 4', 'semi-final'])
         m_knockouts[mid] = ko
         m_stages[mid] = str(row['stage']) if pd.notna(row['stage']) else 'League'
         
-        # Target determination
-        if pd.notna(row['revised_target']):
+        # Target determination with DLS precedence
+        if pd.notna(row['revised_target']) and float(row['revised_target']) > 0:
             m_targets[mid] = float(row['revised_target'])
         elif mid in inn1_totals:
             m_targets[mid] = float(inn1_totals[mid] + 1)
@@ -78,16 +84,16 @@ def process_deliveries(ball_by_ball, matches):
     bbb['target'] = bbb['match_id'].map(m_targets).fillna(165.0)
     bbb['is_knockout'] = bbb['match_id'].map(m_knockouts).fillna(False)
     bbb['stage'] = bbb['match_id'].map(m_stages).fillna('League')
+    bbb['rev_balls_inn1'] = bbb['match_id'].map(m_revised_inn1)
+    bbb['rev_balls_inn2'] = bbb['match_id'].map(m_revised_inn2)
     
-    # 6. Cumulative match situation BEFORE the ball is bowled
-    # groupby match_id and innings:
-    print("Computing cumulative state (runs, wickets, balls)...")
+    # 6. Cumulative match situation BEFORE each delivery
+    print("Computing cumulative match state (runs, wickets, legal balls)...")
     bbb['cum_runs'] = bbb.groupby(['match_id', 'innings'])['team_ball_runs'].cumsum() - bbb['team_ball_runs']
     bbb['cum_wkts'] = bbb.groupby(['match_id', 'innings'])['is_wicket'].cumsum() - bbb['is_wicket'].astype(int)
     bbb['cum_legal_balls'] = bbb.groupby(['match_id', 'innings'])['is_legal'].cumsum() - bbb['is_legal'].astype(int)
     
     # Phase calculation
-    # Powerplay: overs 1-6; Middle: overs 7-15; Death: overs 16-20
     bbb['phase'] = np.where(bbb['overid'] <= 6, 'Powerplay',
                    np.where(bbb['overid'] <= 15, 'Middle', 'Death'))
     
@@ -105,8 +111,17 @@ def process_deliveries(ball_by_ball, matches):
         ko_bonus = 12.0 if row['is_knockout'] else 0.0
         
         if inn == 2:
-            runs_req = max(1.0, row['target'] - row['cum_runs'])
-            balls_rem = max(1, 120 - int(row['cum_legal_balls']))
+            rev_balls = row['rev_balls_inn2']
+            max_balls = int(rev_balls) if pd.notna(rev_balls) and rev_balls > 0 else 120
+            
+            runs_req = row['target'] - row['cum_runs']
+            balls_rem = max(1, max_balls - int(row['cum_legal_balls']))
+            
+            # If target already chased, pressure drops to baseline
+            if runs_req <= 0:
+                pressures.append(5.0)
+                continue
+                
             wkts_lost = min(9, int(row['cum_wkts']))
             rrr = (runs_req / balls_rem) * 6.0
             
@@ -116,8 +131,9 @@ def process_deliveries(ball_by_ball, matches):
             # Wicket scarcity pressure (exponential loss of batting resources)
             c_wkt = ((wkts_lost / 9.0) ** 1.8) * 100.0
             
-            # Match stage urgency (last 5 overs = last 30 legal balls)
-            c_stage = max(0.0, (30.0 - balls_rem) / 30.0) * 100.0 if balls_rem <= 30 else 0.0
+            # Match stage urgency scaled to innings duration (final 25% of legal balls)
+            urgency_balls = min(30, int(max_balls * 0.25))
+            c_stage = max(0.0, (urgency_balls - balls_rem) / float(urgency_balls)) * 100.0 if balls_rem <= urgency_balls else 0.0
             
             # Compounding crisis interaction (high RRR with few wickets in hand)
             interaction = 0.0
@@ -128,27 +144,33 @@ def process_deliveries(ball_by_ball, matches):
             pressures.append(min(100.0, max(0.0, p)))
         else:
             # Innings 1 (Setting target)
+            rev_balls = row['rev_balls_inn1']
+            max_balls = int(rev_balls) if pd.notna(rev_balls) and rev_balls > 0 else 120
+            max_overs = max(5, max_balls // 6)
+            
             over = row['overid']
             wkts_lost = min(9, int(row['cum_wkts']))
             
             p = 15.0  # Base early innings pressure
             
-            # Collapse pressure
-            if over <= 6:
+            # Dynamic Powerplay & Middle overs thresholds adapted to match length
+            pp_limit = min(6, int(max_overs * 0.3))
+            mid_limit = min(15, int(max_overs * 0.75))
+            
+            if over <= pp_limit:
                 if wkts_lost >= 3: p += 55.0
                 elif wkts_lost >= 2: p += 30.0
                 elif wkts_lost >= 1: p += 10.0
-            elif over <= 12:
+            elif over <= mid_limit:
                 if wkts_lost >= 5: p += 60.0
                 elif wkts_lost >= 4: p += 45.0
                 elif wkts_lost >= 3: p += 25.0
-            elif over <= 15:
-                if wkts_lost >= 6: p += 55.0
-                elif wkts_lost >= 5: p += 40.0
-                
-            # Death overs acceleration pressure
-            if over >= 16:
-                death_base = {16: 40.0, 17: 48.0, 18: 56.0, 19: 64.0, 20: 72.0}.get(over, 50.0)
+            
+            # Death overs acceleration pressure (final 4 overs of the innings)
+            death_start = max(1, max_overs - 4)
+            if over >= death_start:
+                death_step = (over - death_start) / max(1, max_overs - death_start)
+                death_base = 40.0 + death_step * 32.0
                 if wkts_lost >= 5: death_base += 15.0
                 p = max(p, death_base)
                 
@@ -166,7 +188,7 @@ def process_deliveries(ball_by_ball, matches):
     bbb['is_high_pressure'] = bbb['pressure_index'] >= 60.0
     bbb['is_normal_pressure'] = bbb['pressure_index'] < 40.0
     
-    print("ETL complete. Delivery dataset processed successfully!")
+    print("ETL complete. Delivery dataset processed successfully with dynamic match lengths!")
     return bbb
 
 if __name__ == "__main__":
@@ -174,4 +196,3 @@ if __name__ == "__main__":
     bbb_processed = process_deliveries(ball_by_ball, matches)
     print("Sample processed deliveries:")
     print(bbb_processed[['match_id', 'innings', 'overid', 'striker_name', 'bowler_name', 'pressure_index', 'pressure_category']].head(10))
-

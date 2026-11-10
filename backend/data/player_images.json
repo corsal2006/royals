@@ -2,204 +2,460 @@
   "2258": {
     "player_id": 2258,
     "player_name": "Sanju Samson",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Sanju_Samson_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/2258.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2258.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Sanju_Samson_in_PMO_New_Delhi.jpg"
   },
   "6819": {
     "player_id": 6819,
     "player_name": "Yashasvi Jaiswal",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Yashasvi_Jaiswal_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/6819.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/6819.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Yashasvi_Jaiswal_in_PMO_New_Delhi.jpg"
   },
   "3297": {
     "player_id": 3297,
     "player_name": "Shimron Hetmyer",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Shimron_Hetmyer.jpg",
+    "image_url": "/players/3297.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/3297.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Shimron_Hetmyer.jpg"
   },
   "3644": {
     "player_id": 3644,
     "player_name": "Kuldeep Yadav",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Kuldeep_Yadav_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/3644.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/3644.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/Kuldeep_Yadav_in_PMO_New_Delhi.jpg"
   },
   "6464": {
     "player_id": 6464,
     "player_name": "Arshdeep Singh",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Arshdeep_Singh_Family_%28Cropped%29.jpg",
+    "image_url": "/players/6464.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/6464.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Arshdeep_Singh_Family_%28Cropped%29.jpg"
   },
   "2933": {
     "player_id": 2933,
     "player_name": "Jasprit Bumrah",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Jasprit_Bumrah_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/2933.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2933.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Jasprit_Bumrah_in_PMO_New_Delhi.jpg"
   },
   "2320": {
     "player_id": 2320,
     "player_name": "Trent Boult",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/2018.02.03.22.23.14-AUSvNZL_T20_AUS_innings%2C_SCG_%2839533156665%29.jpg",
+    "image_url": "/players/2320.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2320.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/2018.02.03.22.23.14-AUSvNZL_T20_AUS_innings%2C_SCG_%2839533156665%29.jpg"
   },
   "4926": {
     "player_id": 4926,
     "player_name": "Shadab Khan",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Shadab_Khan.png",
+    "image_url": "/players/4926.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/4926.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Shadab_Khan.png"
   },
   "1612": {
     "player_id": 1612,
     "player_name": "Yuzvendra Chahal",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Yuzvendra_Chahal_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/1612.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/1612.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Yuzvendra_Chahal_in_PMO_New_Delhi.jpg"
   },
   "5944": {
     "player_id": 5944,
     "player_name": "Mohammed Siraj",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/da/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Mohammad_Siraj_%28cropped%29.jpg",
+    "image_url": "/players/5944.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/5944.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/d/da/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Mohammad_Siraj_%28cropped%29.jpg"
   },
   "829": {
     "player_id": 829,
     "player_name": "Mitchell Starc",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/RSA_vs_AUS_Day_1_-_Mitchel_Starch_-2.jpg",
+    "image_url": "/players/829.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/829.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/RSA_vs_AUS_Day_1_-_Mitchel_Starch_-2.jpg"
   },
   "1699": {
     "player_id": 1699,
     "player_name": "Suryakumar Yadav",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Suryakumar_Yadav_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/1699.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/1699.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Suryakumar_Yadav_in_PMO_New_Delhi.jpg"
   },
   "2639": {
     "player_id": 2639,
     "player_name": "Marcus Stoinis",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/2018.01.21.15.22.25-Stoinis_%2839081521620%29.jpg",
+    "image_url": "/players/2639.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2639.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/2018.01.21.15.22.25-Stoinis_%2839081521620%29.jpg"
   },
   "796": {
     "player_id": 796,
     "player_name": "Matthew Wade",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Matthew_Wade.jpg",
+    "image_url": "/players/796.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Official Sports Registry",
+    "local_image": "/players/796.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c244950/matthew-wade.jpg"
   },
   "47": {
     "player_id": 47,
     "player_name": "Virat Kohli",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Virat_Kohli_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/47.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/47.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Virat_Kohli_in_PMO_New_Delhi.jpg"
   },
   "126": {
     "player_id": 126,
     "player_name": "Rohit Sharma",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Shri_Rohit_Gurunath_Sharma_%28Cropped%29.jpg",
+    "image_url": "/players/126.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/126.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Prime_Minister_Of_Bharat_Shri_Narendra_Damodardas_Modi_with_Shri_Rohit_Gurunath_Sharma_%28Cropped%29.jpg"
   },
   "4703": {
     "player_id": 4703,
     "player_name": "Rishabh Pant",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Rishabh_Pant.jpg",
+    "image_url": "/players/4703.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/4703.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Rishabh_Pant.jpg"
   },
   "6288": {
     "player_id": 6288,
     "player_name": "Shubman Gill",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Shubman_Gill_2023_%28cropped%29.jpg",
+    "image_url": "/players/6288.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/6288.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Shubman_Gill_2023_%28cropped%29.jpg"
   },
   "2367": {
     "player_id": 2367,
     "player_name": "Travis Head",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Travis_Head_bowling_at_Perth_Stadium%2C_First_Test_Australia_versus_West_Indies%2C_2_December_2022_03_%28cropped%29.jpg",
+    "image_url": "/players/2367.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2367.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Travis_Head_bowling_at_Perth_Stadium%2C_First_Test_Australia_versus_West_Indies%2C_2_December_2022_03_%28cropped%29.jpg"
   },
   "220": {
     "player_id": 220,
     "player_name": "David Warner",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/DAVID_WARNER_%2811704782453%29.jpg",
+    "image_url": "/players/220.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/220.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/DAVID_WARNER_%2811704782453%29.jpg"
   },
   "152": {
     "player_id": 152,
     "player_name": "Ravindra Jadeja",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/PM_Shri_Narendra_Modi_with_Ravindra_Jadeja_%28Cropped%29.jpg",
+    "image_url": "/players/152.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/152.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/PM_Shri_Narendra_Modi_with_Ravindra_Jadeja_%28Cropped%29.jpg"
   },
   "3330": {
     "player_id": 3330,
     "player_name": "Hardik Pandya",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Hardik_Pandya_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/3330.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/3330.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Hardik_Pandya_in_PMO_New_Delhi.jpg"
   },
   "2876": {
     "player_id": 2876,
     "player_name": "Axar Patel",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Axar_Patel_in_PMO_New_Delhi.jpg",
+    "image_url": "/players/2876.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/2876.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Axar_Patel_in_PMO_New_Delhi.jpg"
   },
   "1318": {
     "player_id": 1318,
     "player_name": "Andre Russell",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Andre_Russell_%281%29.jpg",
+    "image_url": "/players/1318.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/1318.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Andre_Russell_%281%29.jpg"
   },
   "781": {
     "player_id": 781,
     "player_name": "Sunil Narine",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Sunil_Narine.jpg",
+    "image_url": "/players/781.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/781.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Sunil_Narine.jpg"
   },
   "4722": {
     "player_id": 4722,
     "player_name": "Rashid Khan",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Rashid_Khan.jpg",
+    "image_url": "/players/4722.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/4722.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Rashid_Khan.jpg"
   },
   "838": {
     "player_id": 838,
     "player_name": "Glenn Maxwell",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Glen_Maxwell_2026_%28cropped%29.jpg",
+    "image_url": "/players/838.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/838.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Glen_Maxwell_2026_%28cropped%29.jpg"
   },
   "8": {
     "player_id": 8,
     "player_name": "Mahendra Singh Dhoni",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Mahendra_Singh_Dhoni_January_2016_%28cropped%29.jpg",
+    "image_url": "/players/8.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/8.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Mahendra_Singh_Dhoni_January_2016_%28cropped%29.jpg"
   },
   "1077": {
     "player_id": 1077,
     "player_name": "David Miller",
-    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/DAVID_MILLER_%2815704846295%29.jpg",
+    "image_url": "/players/1077.jpg",
     "verified": true,
-    "source": "Wikimedia Commons / Verified Sports Registry"
+    "source": "Wikimedia Commons / Verified Sports Registry",
+    "local_image": "/players/1077.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/DAVID_MILLER_%2815704846295%29.jpg"
+  },
+  "4708": {
+    "player_id": 4708,
+    "player_name": "Rinku Singh",
+    "image_url": "/players/4708.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/4708.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332898/rinku-singh.jpg"
+  },
+  "8661": {
+    "player_id": 8661,
+    "player_name": "Matheesha Pathirana",
+    "image_url": "/players/8661.jpg",
+    "verified": true,
+    "source": "IPL Official Registry",
+    "local_image": "/players/8661.jpg",
+    "original_url": "https://documents.iplt20.com/ipl/IPLHeadshot2024/1014.png"
+  },
+  "6256": {
+    "player_id": 6256,
+    "player_name": "Varun Chakravarthy",
+    "image_url": "/players/6256.jpg",
+    "verified": true,
+    "source": "IPL Official Registry",
+    "local_image": "/players/6256.jpg",
+    "original_url": "https://documents.iplt20.com/ipl/IPLHeadshot2024/140.png"
+  },
+  "2756": {
+    "player_id": 2756,
+    "player_name": "Shashank Singh",
+    "image_url": "/players/2756.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/2756.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c351474/shashank-singh.jpg"
+  },
+  "37052": {
+    "player_id": 37052,
+    "player_name": "Naman Dhir",
+    "image_url": "/players/37052.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/37052.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c351496/naman-dhir.jpg"
+  },
+  "20702": {
+    "player_id": 20702,
+    "player_name": "Tristan Stubbs",
+    "image_url": "/players/20702.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/20702.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332912/tristan-stubbs.jpg"
+  },
+  "6396": {
+    "player_id": 6396,
+    "player_name": "Tim David",
+    "image_url": "/players/6396.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/6396.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332918/tim-david.jpg"
+  },
+  "8182": {
+    "player_id": 8182,
+    "player_name": "Donovan Ferreira",
+    "image_url": "/players/8182.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/8182.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332948/donovan-ferreira.jpg"
+  },
+  "7260": {
+    "player_id": 7260,
+    "player_name": "Dhruv Jurel",
+    "image_url": "/players/7260.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/7260.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332914/dhruv-jurel.jpg"
+  },
+  "6423": {
+    "player_id": 6423,
+    "player_name": "Riyan Parag",
+    "image_url": "/players/6423.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/6423.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332890/riyan-parag.jpg"
+  },
+  "19316": {
+    "player_id": 19316,
+    "player_name": "Maheesh Theekshana",
+    "image_url": "/players/19316.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/19316.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332938/maheesh-theekshana.jpg"
+  },
+  "7967": {
+    "player_id": 7967,
+    "player_name": "Noor Ahmad",
+    "image_url": "/players/7967.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/7967.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332934/noor-ahmad.jpg"
+  },
+  "4260": {
+    "player_id": 4260,
+    "player_name": "Heinrich Klaasen",
+    "image_url": "/players/4260.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/4260.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332916/heinrich-klaasen.jpg"
+  },
+  "3125": {
+    "player_id": 3125,
+    "player_name": "Nicholas Pooran",
+    "image_url": "/players/3125.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/3125.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332908/nicholas-pooran.jpg"
+  },
+  "4409": {
+    "player_id": 4409,
+    "player_name": "Sam Curran",
+    "image_url": "/players/4409.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/4409.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332920/sam-curran.jpg"
+  },
+  "88": {
+    "player_id": 88,
+    "player_name": "Faf du Plessis",
+    "image_url": "/players/88.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/88.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332880/faf-du-plessis.jpg"
+  },
+  "953": {
+    "player_id": 953,
+    "player_name": "Lokesh Rahul",
+    "image_url": "/players/953.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/953.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332876/kl-rahul.jpg"
+  },
+  "1566": {
+    "player_id": 1566,
+    "player_name": "Mohammed Shami",
+    "image_url": "/players/1566.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/1566.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c332884/mohammed-shami.jpg"
+  },
+  "2417": {
+    "player_id": 2417,
+    "player_name": "Akeal Hosein",
+    "image_url": "/players/2417.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/2417.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c244976/akeal-hosein.jpg"
+  },
+  "2490": {
+    "player_id": 2490,
+    "player_name": "Mohammad Nawaz",
+    "image_url": "/players/2490.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/2490.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c244968/mohammad-nawaz.jpg"
+  },
+  "5979": {
+    "player_id": 5979,
+    "player_name": "Abrar Ahmed",
+    "image_url": "/players/5979.jpg",
+    "verified": true,
+    "source": "Wikimedia Commons",
+    "local_image": "/players/5979.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Abrar_Ahmed_bowling_2023_%28cropped%29.jpg"
+  },
+  "34485": {
+    "player_id": 34485,
+    "player_name": "Sufiyan Muqeem",
+    "image_url": "/players/34485.jpg",
+    "verified": true,
+    "source": "Official Sports Registry",
+    "local_image": "/players/34485.jpg",
+    "original_url": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c351478/sufiyan-muqeem.jpg"
   }
 }

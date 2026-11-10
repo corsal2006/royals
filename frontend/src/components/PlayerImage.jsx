@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Zap, Target, Crosshair, Award } from 'lucide-react';
+import { Shield, Zap, Target, Crosshair, Award, CheckCircle2 } from 'lucide-react';
 
-// Optional global cache of verified photos
+// Global cache of verified photos
 let GLOBAL_IMAGE_CACHE = null;
 
 export default function PlayerImage({ 
   playerId, 
+  player,
   name = "Player", 
   imageUrl = null, 
   role = "", 
@@ -14,13 +15,19 @@ export default function PlayerImage({
   showBadge = false,
   verified = false
 }) {
-  const [imgSrc, setImgSrc] = useState(imageUrl);
+  const actualId = playerId || player?.player_id || player?.id || player?.striker_id || player?.bowler_id;
+  const actualName = name !== "Player" ? name : (player?.player_name || player?.name || "Player");
+  const actualUrl = imageUrl || player?.image_url || player?.local_image;
+  const actualRole = role || player?.primary_role || player?.role || player?.category || "";
+  const isVerified = verified || player?.verified || player?.image_verified;
+
+  const [imgSrc, setImgSrc] = useState(actualUrl || (actualId ? `/players/${actualId}.jpg` : null));
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // Compute player initials (e.g. Sanju Samson -> SS, Virat Kohli -> VK)
   const getInitials = (n) => {
-    if (!n) return "RR";
+    if (!n || n === "Player") return "RR";
     const parts = n.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
@@ -46,44 +53,54 @@ export default function PlayerImage({
   };
 
   useEffect(() => {
-    if (imageUrl) {
-      setImgSrc(imageUrl);
+    const targetId = actualId ? String(actualId) : null;
+    
+    if (actualUrl) {
+      setImgSrc(actualUrl);
       setHasError(false);
       setIsLoading(true);
-    } else if (playerId && !GLOBAL_IMAGE_CACHE) {
+      return;
+    }
+
+    if (!targetId) {
+      setHasError(true);
+      setIsLoading(false);
+      return;
+    }
+
+    if (!GLOBAL_IMAGE_CACHE) {
       fetch('/api/images')
         .then(res => res.json())
         .then(data => {
           GLOBAL_IMAGE_CACHE = data;
-          const found = data[String(playerId)];
-          if (found && found.image_url) {
-            setImgSrc(found.image_url);
+          const found = data[targetId];
+          if (found && (found.image_url || found.local_image)) {
+            setImgSrc(found.image_url || found.local_image);
             setHasError(false);
           } else {
-            setHasError(true);
+            setImgSrc(`/players/${targetId}.jpg`);
+            setHasError(false);
           }
           setIsLoading(false);
         })
         .catch(() => {
-          setHasError(true);
+          setImgSrc(`/players/${targetId}.jpg`);
           setIsLoading(false);
         });
-    } else if (playerId && GLOBAL_IMAGE_CACHE) {
-      const found = GLOBAL_IMAGE_CACHE[String(playerId)];
-      if (found && found.image_url) {
-        setImgSrc(found.image_url);
+    } else {
+      const found = GLOBAL_IMAGE_CACHE[targetId];
+      if (found && (found.image_url || found.local_image)) {
+        setImgSrc(found.image_url || found.local_image);
         setHasError(false);
       } else {
-        setHasError(true);
+        setImgSrc(`/players/${targetId}.jpg`);
+        setHasError(false);
       }
       setIsLoading(false);
-    } else {
-      setHasError(true);
-      setIsLoading(false);
     }
-  }, [playerId, imageUrl]);
+  }, [actualId, actualUrl]);
 
-  const initials = getInitials(name);
+  const initials = getInitials(actualName);
   const selectedSizeClass = sizeClasses[size] || sizeClasses.md;
   const selectedBadgeSize = badgeSizes[size] || badgeSizes.md;
 
@@ -98,7 +115,7 @@ export default function PlayerImage({
         icon: <Zap className="w-2.5 h-2.5 text-purple-400" />
       };
     }
-    if (lower.includes('bowl')) {
+    if (lower.includes('bowl') || lower.includes('pacer') || lower.includes('spinner')) {
       return {
         bg: "from-blue-900 via-slate-900 to-navy-900 dark:from-blue-950 dark:to-navy-950",
         border: "border-royal-blue/40",
@@ -106,7 +123,7 @@ export default function PlayerImage({
         icon: <Target className="w-2.5 h-2.5 text-royal-cyan" />
       };
     }
-    if (lower.includes('wicket') || lower.includes('wk')) {
+    if (lower.includes('wicket') || lower.includes('wk') || lower.includes('keeper')) {
       return {
         bg: "from-amber-900 via-slate-900 to-navy-900 dark:from-amber-950 dark:to-navy-950",
         border: "border-royal-gold/40",
@@ -123,21 +140,24 @@ export default function PlayerImage({
     };
   };
 
-  const roleTheme = getRoleTheme(role);
+  const roleTheme = getRoleTheme(actualRole);
 
   return (
     <div className={`relative inline-block shrink-0 rounded-2xl select-none ${selectedSizeClass} ${className}`}>
-      {/* If verified photo is available and loaded without error */}
+      {/* If photo is available and loaded without error */}
       {imgSrc && !hasError ? (
-        <div className="w-full h-full relative rounded-2xl overflow-hidden bg-navy-850 dark:bg-navy-900 border border-slate-200 dark:border-navy-700 shadow-sm">
+        <div className="w-full h-full relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-navy-700 shadow-sm">
           {isLoading && (
             <div className="absolute inset-0 bg-slate-200 dark:bg-navy-800 animate-pulse"></div>
           )}
           <img
             src={imgSrc}
-            alt={name}
+            alt={actualName}
             loading="lazy"
-            onLoad={() => setIsLoading(false)}
+            onLoad={() => {
+              setIsLoading(false);
+              setHasError(false);
+            }}
             onError={() => {
               setHasError(true);
               setIsLoading(false);
@@ -151,10 +171,10 @@ export default function PlayerImage({
         /* Verified Elegant Initials-Based Avatar (Never displays broken images or wrong faces) */
         <div 
           className={`w-full h-full rounded-2xl bg-gradient-to-br ${roleTheme.bg} border ${roleTheme.border} flex flex-col items-center justify-center font-display font-black tracking-wider text-white shadow-inner relative overflow-hidden`}
-          title={`${name} (${role || 'Cricketer'})`}
+          title={`${actualName} (${actualRole || 'Cricketer'})`}
         >
           {/* Subtle background sport crest texture */}
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:6px_6px] pointer-events-none"></div>
+          <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:6px_6px] pointer-events-none"></div>
 
           <span className="relative z-10 leading-none">
             {initials}

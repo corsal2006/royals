@@ -222,10 +222,10 @@ def generate_all():
     # 6. Build Rajasthan Royals Auction Shortlist (IPL 2027)
     rr_targets = [
         {
-            "player_id": int(top10_batters[top10_batters['striker_name'] == 'Rinku Singh']['striker_id'].values[0]),
+            "player_id": int(bat[bat['striker_name'] == 'Rinku Singh']['striker_id'].values[0]),
             "name": "Rinku Singh",
             "category": "Specialist Finisher",
-            "pri_score": float(top10_batters[top10_batters['striker_name'] == 'Rinku Singh']['bpri'].values[0]),
+            "pri_score": float(bat[bat['striker_name'] == 'Rinku Singh']['bpri'].values[0]),
             "role_in_rr": "Designated Match-Closer at #6 / #7",
             "stat_highlight": "934 pressure runs @ 172.3 SR (+45.2 SR delta)",
             "why_rr_must_buy": "Solves RR's chronic inability to convert high-RRR chases in playoffs. Forms an indomitable finisher tandem with Dhruv Jurel and Shimron Hetmyer.",
@@ -233,10 +233,10 @@ def generate_all():
             "sample_confidence": "HIGH (542 balls)"
         },
         {
-            "player_id": int(top10_bowlers[top10_bowlers['bowler_name'] == 'Kuldeep Yadav']['bowler_id'].values[0]),
+            "player_id": int(bowl[bowl['bowler_name'] == 'Kuldeep Yadav']['bowler_id'].values[0]),
             "name": "Kuldeep Yadav",
             "category": "Lead Mystery / Wrist Spinner",
-            "pri_score": float(top10_bowlers[top10_bowlers['bowler_name'] == 'Kuldeep Yadav']['bopri'].values[0]),
+            "pri_score": float(bowl[bowl['bowler_name'] == 'Kuldeep Yadav']['bopri'].values[0]),
             "role_in_rr": "Middle-Overs Strangler & Wicket-Taker",
             "stat_highlight": "6.51 economy & 10.55 avg under high pressure (36 wkts)",
             "why_rr_must_buy": "Replaces and upgrades RR's historical spin core (Chahal/Ashwin). Strangles opposition batters under pressure with unreadable googlies.",
@@ -244,10 +244,10 @@ def generate_all():
             "sample_confidence": "HIGH (350 balls)"
         },
         {
-            "player_id": int(top10_bowlers[top10_bowlers['bowler_name'] == 'Matheesha Pathirana']['bowler_id'].values[0]),
+            "player_id": int(bowl[bowl['bowler_name'] == 'Matheesha Pathirana']['bowler_id'].values[0]),
             "name": "Matheesha Pathirana",
             "category": "Overseas Death Overs Spearmhead",
-            "pri_score": float(top10_bowlers[top10_bowlers['bowler_name'] == 'Matheesha Pathirana']['bopri'].values[0]),
+            "pri_score": float(bowl[bowl['bowler_name'] == 'Matheesha Pathirana']['bopri'].values[0]),
             "role_in_rr": "Overs 18 & 20 Lock-Down Pacer",
             "stat_highlight": "44 pressure wkts @ 8.30 death economy, 12.57 avg",
             "why_rr_must_buy": "The single most lethal death bowler in T20. Provides RR the missing piece to defend tight totals of 160-175.",
@@ -255,10 +255,10 @@ def generate_all():
             "sample_confidence": "HIGH (400 balls)"
         },
         {
-            "player_id": int(top10_bowlers[top10_bowlers['bowler_name'] == 'Varun Chakravarthy']['bowler_id'].values[0]),
+            "player_id": int(bowl[bowl['bowler_name'] == 'Varun Chakravarthy']['bowler_id'].values[0]),
             "name": "Varun Chakravarthy",
             "category": "Mystery Choke Spinner",
-            "pri_score": float(top10_bowlers[top10_bowlers['bowler_name'] == 'Varun Chakravarthy']['bopri'].values[0]),
+            "pri_score": float(bowl[bowl['bowler_name'] == 'Varun Chakravarthy']['bopri'].values[0]),
             "role_in_rr": "Versatile 4-over Mystery Enforcer",
             "stat_highlight": "6.77 economy under pressure (+1.52 economy improvement)",
             "why_rr_must_buy": "Can bowl in powerplay, middle overs, or over 17 without giving away boundary angles.",

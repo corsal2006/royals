@@ -81,3 +81,4 @@ def generate_player_images():
 
 if __name__ == '__main__':
     generate_player_images()
+

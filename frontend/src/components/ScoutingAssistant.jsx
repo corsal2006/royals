@@ -172,10 +172,8 @@ export default function ScoutingAssistant({ onSelectPlayer }) {
                           >
                             <div className="flex items-center space-x-2.5 min-w-0">
                               <PlayerImage 
-                                playerId={pid}
-                                name={p.player_name || p.name}
-                                role={p.primary_role || p.role}
-                                size="xs"
+                                player={p}
+                                size="sm"
                               />
                               <div className="truncate">
                                 <span className="font-bold text-slate-900 dark:text-white block truncate leading-tight">
@@ -250,3 +248,4 @@ export default function ScoutingAssistant({ onSelectPlayer }) {
     </div>
   );
 }
+
