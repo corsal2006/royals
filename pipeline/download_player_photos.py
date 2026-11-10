@@ -40,3 +40,4 @@ print(f"\nFinished downloading! Success: {success}, Failed: {failed}")
 
 with open('backend/data/player_images.json', 'w', encoding='utf-8') as f:
     json.dump(images, f, indent=2)
+

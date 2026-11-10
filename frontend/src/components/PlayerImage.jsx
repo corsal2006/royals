@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Shield, Zap, Target, Crosshair, Award, CheckCircle2 } from 'lucide-react';
-
-// Global cache of verified photos
-let GLOBAL_IMAGE_CACHE = null;
+import React, { useState } from 'react';
+import { Target, Crosshair, Shield, Zap } from 'lucide-react';
 
 export default function PlayerImage({ 
   playerId, 
@@ -17,11 +14,9 @@ export default function PlayerImage({
 }) {
   const actualId = playerId || player?.player_id || player?.id || player?.striker_id || player?.bowler_id;
   const actualName = name !== "Player" ? name : (player?.player_name || player?.name || "Player");
-  const actualUrl = imageUrl || player?.image_url || player?.local_image;
+  const actualUrl = imageUrl || player?.image_url || player?.local_image || (actualId ? `/players/${actualId}.jpg` : null);
   const actualRole = role || player?.primary_role || player?.role || player?.category || "";
-  const isVerified = verified || player?.verified || player?.image_verified;
 
-  const [imgSrc, setImgSrc] = useState(actualUrl || (actualId ? `/players/${actualId}.jpg` : null));
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,140 +47,63 @@ export default function PlayerImage({
     hero: "w-8 h-8 bottom-2 right-2"
   };
 
-  useEffect(() => {
-    const targetId = actualId ? String(actualId) : null;
-    
-    if (actualUrl) {
-      setImgSrc(actualUrl);
-      setHasError(false);
-      setIsLoading(true);
-      return;
+  // Role icon indicator
+  const getRoleIcon = (r) => {
+    const lower = (r || '').toLowerCase();
+    if (lower.includes('all-rounder') || lower.includes('all rounder')) {
+      return <Zap className="w-2.5 h-2.5 text-purple-400" />;
     }
-
-    if (!targetId) {
-      setHasError(true);
-      setIsLoading(false);
-      return;
+    if (lower.includes('bowl') || lower.includes('pacer') || lower.includes('spinner')) {
+      return <Target className="w-2.5 h-2.5 text-royal-cyan" />;
     }
-
-    if (!GLOBAL_IMAGE_CACHE) {
-      fetch('/api/images')
-        .then(res => res.json())
-        .then(data => {
-          GLOBAL_IMAGE_CACHE = data;
-          const found = data[targetId];
-          if (found && (found.image_url || found.local_image)) {
-            setImgSrc(found.image_url || found.local_image);
-            setHasError(false);
-          } else {
-            setImgSrc(`/players/${targetId}.jpg`);
-            setHasError(false);
-          }
-          setIsLoading(false);
-        })
-        .catch(() => {
-          setImgSrc(`/players/${targetId}.jpg`);
-          setIsLoading(false);
-        });
-    } else {
-      const found = GLOBAL_IMAGE_CACHE[targetId];
-      if (found && (found.image_url || found.local_image)) {
-        setImgSrc(found.image_url || found.local_image);
-        setHasError(false);
-      } else {
-        setImgSrc(`/players/${targetId}.jpg`);
-        setHasError(false);
-      }
-      setIsLoading(false);
+    if (lower.includes('wicket') || lower.includes('wk') || lower.includes('keeper')) {
+      return <Shield className="w-2.5 h-2.5 text-royal-gold" />;
     }
-  }, [actualId, actualUrl]);
+    return <Crosshair className="w-2.5 h-2.5 text-royal-pink" />;
+  };
 
   const initials = getInitials(actualName);
   const selectedSizeClass = sizeClasses[size] || sizeClasses.md;
   const selectedBadgeSize = badgeSizes[size] || badgeSizes.md;
 
-  // Role gradient theme
-  const getRoleTheme = (r) => {
-    const lower = (r || '').toLowerCase();
-    if (lower.includes('all-rounder') || lower.includes('all rounder')) {
-      return {
-        bg: "from-purple-900 via-indigo-900 to-navy-900 dark:from-purple-950 dark:to-navy-950",
-        border: "border-purple-500/40",
-        text: "text-purple-300",
-        icon: <Zap className="w-2.5 h-2.5 text-purple-400" />
-      };
-    }
-    if (lower.includes('bowl') || lower.includes('pacer') || lower.includes('spinner')) {
-      return {
-        bg: "from-blue-900 via-slate-900 to-navy-900 dark:from-blue-950 dark:to-navy-950",
-        border: "border-royal-blue/40",
-        text: "text-blue-300",
-        icon: <Target className="w-2.5 h-2.5 text-royal-cyan" />
-      };
-    }
-    if (lower.includes('wicket') || lower.includes('wk') || lower.includes('keeper')) {
-      return {
-        bg: "from-amber-900 via-slate-900 to-navy-900 dark:from-amber-950 dark:to-navy-950",
-        border: "border-royal-gold/40",
-        text: "text-amber-300",
-        icon: <Shield className="w-2.5 h-2.5 text-royal-gold" />
-      };
-    }
-    // Default: Batter
-    return {
-      bg: "from-pink-900/90 via-slate-900 to-navy-900 dark:from-pink-950 dark:to-navy-950",
-      border: "border-royal-pink/40",
-      text: "text-pink-300",
-      icon: <Crosshair className="w-2.5 h-2.5 text-royal-pink" />
-    };
-  };
-
-  const roleTheme = getRoleTheme(actualRole);
-
   return (
     <div className={`relative inline-block shrink-0 rounded-2xl select-none ${selectedSizeClass} ${className}`}>
-      {/* If photo is available and loaded without error */}
-      {imgSrc && !hasError ? (
+      {actualUrl && !hasError ? (
         <div className="w-full h-full relative rounded-2xl overflow-hidden bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-navy-700 shadow-sm">
           {isLoading && (
             <div className="absolute inset-0 bg-slate-200 dark:bg-navy-800 animate-pulse"></div>
           )}
           <img
-            src={imgSrc}
+            src={actualUrl}
             alt={actualName}
             loading="lazy"
-            onLoad={() => {
-              setIsLoading(false);
-              setHasError(false);
-            }}
+            onLoad={() => setIsLoading(false)}
             onError={() => {
               setHasError(true);
               setIsLoading(false);
             }}
-            className={`w-full h-full object-cover object-top transition-opacity duration-300 ${
+            className={`w-full h-full object-cover object-top transition-opacity duration-200 ${
               isLoading ? 'opacity-0' : 'opacity-100'
             }`}
           />
         </div>
       ) : (
-        /* Verified Elegant Initials-Based Avatar (Never displays broken images or wrong faces) */
+        /* Clean Vector Athlete Avatar */
         <div 
-          className={`w-full h-full rounded-2xl bg-gradient-to-br ${roleTheme.bg} border ${roleTheme.border} flex flex-col items-center justify-center font-display font-black tracking-wider text-white shadow-inner relative overflow-hidden`}
+          className="w-full h-full rounded-2xl bg-gradient-to-br from-slate-800 via-navy-900 to-navy-950 border border-slate-700/50 flex flex-col items-center justify-center font-display font-black tracking-wider text-white shadow-inner relative overflow-hidden"
           title={`${actualName} (${actualRole || 'Cricketer'})`}
         >
-          {/* Subtle background sport crest texture */}
           <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:6px_6px] pointer-events-none"></div>
-
-          <span className="relative z-10 leading-none">
+          <span className="relative z-10 leading-none text-royal-gold">
             {initials}
           </span>
         </div>
       )}
 
-      {/* Role / Verification Badge indicator */}
+      {/* Role Badge Indicator */}
       {showBadge && (
         <div className={`absolute ${selectedBadgeSize} rounded-full bg-navy-900 border border-slate-700 flex items-center justify-center shadow-md z-10`}>
-          {roleTheme.icon}
+          {getRoleIcon(actualRole)}
         </div>
       )}
     </div>
