@@ -1,0 +1,23 @@
+{
+  "total_deliveries": 200999,
+  "total_matches": 883,
+  "total_players": 811,
+  "high_pressure_balls": 39289,
+  "high_pressure_pct": 19.55,
+  "normal_pressure_pct": 62.52,
+  "medium_pressure_pct": 17.93,
+  "competitions_count": 141,
+  "ipl_matches_count": 401,
+  "t20i_matches_count": 482,
+  "dismissal_counts": {
+    "Caught": 7557,
+    "Bowled": 1775,
+    "LBW": 709,
+    "RunOut": 600,
+    "Stump": 214,
+    "Hit Wicket": 17,
+    "Retire Out": 6,
+    "Obstracting the field": 2,
+    "Obstructing the field": 1
+  }
+}

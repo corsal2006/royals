@@ -1,0 +1,335 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+// Load precomputed datasets into memory for sub-millisecond API response times
+const DATA_DIR = path.join(__dirname, 'data');
+const DOCS_DIR = path.join(__dirname, '..', 'docs');
+
+let playersMaster = {};
+let top10Batters = [];
+let top10Bowlers = [];
+let allRounders = [];
+let rrAuctionTargets = [];
+let overviewStats = {};
+
+try {
+  playersMaster = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'players_master.json'), 'utf8'));
+  top10Batters = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'top10_batters.json'), 'utf8'));
+  top10Bowlers = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'top10_bowlers.json'), 'utf8'));
+  allRounders = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'all_rounders.json'), 'utf8'));
+  rrAuctionTargets = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'rr_auction_targets.json'), 'utf8'));
+  overviewStats = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'overview_stats.json'), 'utf8'));
+  console.log(`[ROYAL SCOUT AI] Successfully loaded ${Object.keys(playersMaster).length} player records into memory.`);
+} catch (err) {
+  console.error('[ROYAL SCOUT AI] Error loading dataset files:', err.message);
+}
+
+// 1. Health check & System Info
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'online',
+    system: 'ROYAL SCOUT AI — Official Round 1 Decision Support Engine',
+    timestamp: new Date().toISOString(),
+    total_players: Object.keys(playersMaster).length
+  });
+});
+
+// 2. Executive Overview Stats
+app.get('/api/overview', (req, res) => {
+  res.json({
+    stats: overviewStats,
+    top10_batters: top10Batters,
+    top10_bowlers: top10Bowlers,
+    rr_targets_count: rrAuctionTargets.length
+  });
+});
+
+// 3. Official Unstop Submission Top 10 Dropdowns & Tables
+app.get('/api/rankings/top10', (req, res) => {
+  res.json({
+    batters: top10Batters,
+    bowlers: top10Bowlers
+  });
+});
+
+// 4. Batters Rankings (with filtering & sorting)
+app.get('/api/rankings/batters', (req, res) => {
+  const minBalls = parseInt(req.query.min_balls) || 60;
+  const country = req.query.country || 'ALL';
+  const search = (req.query.search || '').toLowerCase();
+  const sortBy = req.query.sort_by || 'bpri'; // bpri, p_runs, p_sr, delta_sr, p_avg
+  const order = req.query.order === 'asc' ? 1 : -1;
+
+  let list = Object.values(playersMaster)
+    .filter(p => p.batting && p.batting.p_balls >= minBalls);
+
+  if (country !== 'ALL') {
+    list = list.filter(p => p.country && p.country.toLowerCase() === country.toLowerCase());
+  }
+
+  if (search) {
+    list = list.filter(p => 
+      p.player_name.toLowerCase().includes(search) ||
+      (p.current_ipl_team && p.current_ipl_team.toLowerCase().includes(search))
+    );
+  }
+
+  list.sort((a, b) => {
+    let valA = a.bpri || 0;
+    let valB = b.bpri || 0;
+    if (sortBy === 'p_runs') { valA = a.batting.p_runs; valB = b.batting.p_runs; }
+    else if (sortBy === 'p_sr') { valA = a.batting.p_sr; valB = b.batting.p_sr; }
+    else if (sortBy === 'delta_sr') { valA = a.batting.delta_sr; valB = b.batting.delta_sr; }
+    else if (sortBy === 'p_avg') { valA = a.batting.p_avg; valB = b.batting.p_avg; }
+    else if (sortBy === 'p_balls') { valA = a.batting.p_balls; valB = b.batting.p_balls; }
+    return (valA - valB) * order;
+  });
+
+  res.json({
+    total: list.length,
+    min_balls: minBalls,
+    players: list
+  });
+});
+
+// 5. Bowlers Rankings (with filtering & sorting)
+app.get('/api/rankings/bowlers', (req, res) => {
+  const minBalls = parseInt(req.query.min_balls) || 60;
+  const country = req.query.country || 'ALL';
+  const paceOrSpin = req.query.type || 'ALL'; // Pace, Spin
+  const search = (req.query.search || '').toLowerCase();
+  const sortBy = req.query.sort_by || 'bopri'; // bopri, p_wkts, p_econ, delta_econ, p_avg
+  const order = req.query.order === 'asc' ? 1 : -1;
+
+  let list = Object.values(playersMaster)
+    .filter(p => p.bowling && p.bowling.p_balls >= minBalls);
+
+  if (country !== 'ALL') {
+    list = list.filter(p => p.country && p.country.toLowerCase() === country.toLowerCase());
+  }
+
+  if (paceOrSpin !== 'ALL') {
+    list = list.filter(p => p.pace_or_spin && p.pace_or_spin.toLowerCase() === paceOrSpin.toLowerCase());
+  }
+
+  if (search) {
+    list = list.filter(p => 
+      p.player_name.toLowerCase().includes(search) ||
+      (p.current_ipl_team && p.current_ipl_team.toLowerCase().includes(search))
+    );
+  }
+
+  list.sort((a, b) => {
+    let valA = a.bopri || 0;
+    let valB = b.bopri || 0;
+    if (sortBy === 'p_wkts') { valA = a.bowling.p_wkts; valB = b.bowling.p_wkts; }
+    else if (sortBy === 'p_econ') { valA = a.bowling.p_econ; valB = b.bowling.p_econ; return (valB - valA) * order; } // lower econ is better
+    else if (sortBy === 'delta_econ') { valA = a.bowling.delta_econ; valB = b.bowling.delta_econ; }
+    else if (sortBy === 'p_avg') { valA = a.bowling.p_avg; valB = b.bowling.p_avg; return (valB - valA) * order; }
+    else if (sortBy === 'p_balls') { valA = a.bowling.p_balls; valB = b.bowling.p_balls; }
+    return (valA - valB) * order;
+  });
+
+  res.json({
+    total: list.length,
+    min_balls: minBalls,
+    players: list
+  });
+});
+
+// 6. All-Rounders Rankings
+app.get('/api/rankings/all-rounders', (req, res) => {
+  const list = Object.values(playersMaster)
+    .filter(p => p.arpri && p.arpri > 0)
+    .sort((a, b) => (b.arpri || 0) - (a.arpri || 0));
+
+  res.json({
+    total: list.length,
+    players: list
+  });
+});
+
+// 7. Fielders & Wicketkeepers
+app.get('/api/rankings/fielders', (req, res) => {
+  const wks = Object.values(playersMaster)
+    .filter(p => p.is_wk)
+    .sort((a, b) => (b.overall_pri || 0) - (a.overall_pri || 0));
+
+  res.json({
+    total: wks.length,
+    limitation_note: "Notice on Fielding Analysis: The official delivery dataset does not provide individual fielder tracking for outfield catches and ground saves. Dismissals attribute the bowler and dismissed player. Wicketkeepers are identified through official match playing-XIs. Outfield fielding metrics are therefore marked as limited in accordance with the problem statement rules.",
+    wicketkeepers: wks
+  });
+});
+
+// 8. Search All Players
+app.get('/api/players', (req, res) => {
+  const q = (req.query.q || '').toLowerCase();
+  const role = req.query.role || 'ALL';
+  const limit = parseInt(req.query.limit) || 50;
+
+  let results = Object.values(playersMaster);
+
+  if (role !== 'ALL') {
+    results = results.filter(p => p.primary_role.toLowerCase().includes(role.toLowerCase()));
+  }
+
+  if (q) {
+    results = results.filter(p => 
+      p.player_name.toLowerCase().includes(q) ||
+      (p.country && p.country.toLowerCase().includes(q)) ||
+      (p.current_ipl_team && p.current_ipl_team.toLowerCase().includes(q))
+    );
+  }
+
+  results.sort((a, b) => (b.overall_pri || 0) - (a.overall_pri || 0));
+
+  res.json({
+    total: results.length,
+    players: results.slice(0, limit)
+  });
+});
+
+// 9. Single Player Deep Profile
+app.get('/api/player/:id', (req, res) => {
+  const pid = parseInt(req.params.id);
+  const player = playersMaster[pid];
+
+  if (!player) {
+    // Try matching by name if ID was passed as string name
+    const matchByName = Object.values(playersMaster).find(p => 
+      p.player_name.toLowerCase() === req.params.id.toLowerCase()
+    );
+    if (matchByName) {
+      return res.json(matchByName);
+    }
+    return res.status(404).json({ error: 'Player not found in database.' });
+  }
+
+  res.json(player);
+});
+
+// 10. Multi-Player Comparison API (Head to head)
+app.get('/api/compare', (req, res) => {
+  const ids = (req.query.ids || '').split(',').map(id => parseInt(id.trim())).filter(Boolean);
+  if (ids.length < 2) {
+    return res.status(400).json({ error: 'Please provide at least two player IDs for comparison (e.g. ?ids=1699,813).' });
+  }
+
+  const compared = ids.map(id => playersMaster[id]).filter(Boolean);
+  res.json({
+    count: compared.length,
+    players: compared
+  });
+});
+
+// 11. Rajasthan Royals Auction Intelligence Hub
+app.get('/api/auction', (req, res) => {
+  res.json({
+    franchise: 'Rajasthan Royals',
+    target_event: 'IPL 2027 Auction',
+    objective: 'Acquire the Most Reliable Clutch Performers under High Pressure',
+    core_pillars: [
+      { name: "Sanju Samson", role: "Captain & Core Top-Order WK", status: "Retained Core" },
+      { name: "Yashasvi Jaiswal", role: "Explosive Left-Handed Opener", status: "Retained Core" },
+      { name: "Riyan Parag", role: "Middle-Order Spine & Float Power", status: "Retained Core" },
+      { name: "Dhruv Jurel", role: "Homegrown Clutch Finisher & WK", status: "Retained Core" },
+      { name: "Shimron Hetmyer", role: "Left-Handed Power Finisher", status: "Retained Core" }
+    ],
+    auction_strategy_pillars: [
+      {
+        priority: 1,
+        need: "World-Class Death Overs Spearhead",
+        recommended_target: "Matheesha Pathirana / Arshdeep Singh",
+        strategic_rationale: "RR lost critical games in death overs (18-20). Pathirana (BoPRI 73.4, 44 pressure wickets, 8.29 death economy) or Arshdeep (74 pressure wickets) guarantees unhittable yorkers."
+      },
+      {
+        priority: 2,
+        need: "Mystery Spin Breakthrough Magician",
+        recommended_target: "Kuldeep Yadav / Varun Chakravarthy",
+        strategic_rationale: "To command middle overs at Jaipur. Kuldeep holds a 6.51 pressure economy (#1 BoPRI 88.34); Varun boasts an elite 6.77 pressure economy."
+      },
+      {
+        priority: 3,
+        need: "Ice-Cold Chase Closer at #6",
+        recommended_target: "Rinku Singh / David Miller",
+        strategic_rationale: "Rinku Singh (+45.2 SR delta, 934 pressure runs) eliminates the risk of late collapses when chasing 12+ RRR."
+      },
+      {
+        priority: 4,
+        need: "High-Composure Indian Crisis Stabilizer",
+        recommended_target: "Shashank Singh",
+        strategic_rationale: "Shashank averages 57.75 under pressure at 163.8 SR. High-value acquisition to stabilize early top-order wickets."
+      }
+    ],
+    curated_targets: rrAuctionTargets
+  });
+});
+
+// 12. Methodology & Mathematical Proofs
+app.get('/api/methodology', (req, res) => {
+  res.json({
+    pressure_definition: {
+      inn2_formula: "P_ball = 0.42 * C_rrr + 0.33 * C_wkt + 0.25 * C_stage + Interaction_Bonus + Knockout_Bonus",
+      inn1_formula: "P_ball = max(Collapse_Crisis, Death_Phase_Base) + Knockout_Bonus",
+      super_over: "P_ball = 100.0",
+      thresholds: {
+        high: ">= 60 (Top 14.8% of deliveries)",
+        medium: "35 to 59.9 (18.0% of deliveries)",
+        low: "< 35 (67.2% of deliveries)"
+      }
+    },
+    scoring_indices: {
+      batting: "BPRI = w_sample * (0.35 * S_sr + 0.25 * S_avg + 0.20 * S_delta + 0.20 * S_bound) + (1 - w_sample) * 50.0",
+      bowling: "BoPRI = w_sample * (0.35 * S_econ + 0.30 * S_wkt + 0.20 * S_strangle + 0.15 * S_delta_econ) + (1 - w_sample) * 50.0",
+      all_rounder: "ARPRI = 2 * (BPRI * BoPRI) / (BPRI + BoPRI) * Volume_Factor",
+      sample_shrinkage: "w_sample = N_balls / (N_balls + 60.0)"
+    },
+    validation: {
+      total_balls_analyzed: overviewStats.total_deliveries,
+      total_matches: overviewStats.total_matches,
+      cricket_rules_enforced: [
+        "Leg-byes and byes are excluded from bowler conceded runs (official ICC/IPL standard).",
+        "Wides and oversteps are counted towards bowler conceded runs and team score, but do not increment legal balls.",
+        "Run outs and retire outs are excluded from bowler wicket tally.",
+        "Bayesian shrinkage dampens small samples to prevent single-match bias."
+      ]
+    }
+  });
+});
+
+// 13. Download Unstop CSV Rankings
+app.get('/api/export/csv', (req, res) => {
+  const csvPath = path.join(DOCS_DIR, 'UNSTOP_SUBMISSION_RANKINGS.csv');
+  if (fs.existsSync(csvPath)) {
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="UNSTOP_SUBMISSION_RANKINGS.csv"');
+    fs.createReadStream(csvPath).pipe(res);
+  } else {
+    res.status(404).json({ error: 'CSV file not found' });
+  }
+});
+
+// Serve frontend production build if available
+const DIST_DIR = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR));
+  app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(DIST_DIR, 'index.html'));
+    }
+  });
+  console.log(`[ROYAL SCOUT AI] Serving frontend production build from ${DIST_DIR}`);
+}
+
+app.listen(PORT, () => {
+  console.log(`[ROYAL SCOUT AI] Backend server running on http://localhost:${PORT}`);
+});

@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy-900 text-slate-100 font-sans tracking-tight;
+    background-image: 
+      radial-gradient(circle at 15% 15%, rgba(29, 78, 216, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(234, 26, 127, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(226, 183, 20, 0.03) 0%, transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070B19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Glassmorphism utility */
+.royal-glass {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.royal-glass-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(11, 18, 38, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.royal-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.royal-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(234, 26, 127, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(234, 26, 127, 0.2);
+}
+
+/* Gold border glow */
+.gold-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(226, 183, 20, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(226, 183, 20, 0.2);
+}
+
+/* Number display tabular */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Print and PDF Export Styles */
+@media print {
+  @page {
+    size: landscape;
+    margin: 12mm 15mm 12mm 15mm;
+  }
+  
+  html, body {
+    background: #070B19 !important;
+    color: #F8FAFC !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  header, nav, .print\\:hidden {
+    display: none !important;
+  }
+
+  .print-slide {
+    page-break-after: always !important;
+    break-after: page !important;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    background: #0B1226 !important;
+    border: 1px solid #1E293B !important;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+

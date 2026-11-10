@@ -1,0 +1,90 @@
+[
+  {
+    "player_id": 4708,
+    "name": "Rinku Singh",
+    "category": "Specialist Finisher",
+    "pri_score": 73.16,
+    "role_in_rr": "Designated Match-Closer at #6 / #7",
+    "stat_highlight": "934 pressure runs @ 172.3 SR (+45.2 SR delta)",
+    "why_rr_must_buy": "Solves RR's chronic inability to convert high-RRR chases in playoffs. Forms an indomitable finisher tandem with Dhruv Jurel and Shimron Hetmyer.",
+    "auction_tier": "Marquee / High Priority",
+    "sample_confidence": "HIGH (542 balls)"
+  },
+  {
+    "player_id": 3644,
+    "name": "Kuldeep Yadav",
+    "category": "Lead Mystery / Wrist Spinner",
+    "pri_score": 88.34,
+    "role_in_rr": "Middle-Overs Strangler & Wicket-Taker",
+    "stat_highlight": "6.51 economy & 10.55 avg under high pressure (36 wkts)",
+    "why_rr_must_buy": "Replaces and upgrades RR's historical spin core (Chahal/Ashwin). Strangles opposition batters under pressure with unreadable googlies.",
+    "auction_tier": "Marquee / High Priority",
+    "sample_confidence": "HIGH (350 balls)"
+  },
+  {
+    "player_id": 8661,
+    "name": "Matheesha Pathirana",
+    "category": "Overseas Death Overs Spearmhead",
+    "pri_score": 73.4,
+    "role_in_rr": "Overs 18 & 20 Lock-Down Pacer",
+    "stat_highlight": "44 pressure wkts @ 8.30 death economy, 12.57 avg",
+    "why_rr_must_buy": "The single most lethal death bowler in T20. Provides RR the missing piece to defend tight totals of 160-175.",
+    "auction_tier": "Elite Target",
+    "sample_confidence": "HIGH (400 balls)"
+  },
+  {
+    "player_id": 6256,
+    "name": "Varun Chakravarthy",
+    "category": "Mystery Choke Spinner",
+    "pri_score": 78.94,
+    "role_in_rr": "Versatile 4-over Mystery Enforcer",
+    "stat_highlight": "6.77 economy under pressure (+1.52 economy improvement)",
+    "why_rr_must_buy": "Can bowl in powerplay, middle overs, or over 17 without giving away boundary angles.",
+    "auction_tier": "Elite Target",
+    "sample_confidence": "HIGH (414 balls)"
+  },
+  {
+    "player_id": 2756,
+    "name": "Shashank Singh",
+    "category": "Crisis Anchor / Finisher",
+    "pri_score": 71.04,
+    "role_in_rr": "Middle-Order Stabilizer & Boundary Striker",
+    "stat_highlight": "57.75 average under pressure @ 163.8 SR",
+    "why_rr_must_buy": "Rescues RR when top-order wickets fall early. High composure and incredible value at auction.",
+    "auction_tier": "High-Value Acquisition",
+    "sample_confidence": "HIGH (282 balls)"
+  },
+  {
+    "player_id": 6464,
+    "name": "Arshdeep Singh",
+    "category": "Indian Left-Arm Death Pacer",
+    "pri_score": 55.49,
+    "role_in_rr": "Death Overs & Powerplay Swing Leader",
+    "stat_highlight": "74 pressure wickets in 775 balls (highest volume in world)",
+    "why_rr_must_buy": "Indian pace anchor who frees up overseas slots for power batters.",
+    "auction_tier": "Marquee / High Priority",
+    "sample_confidence": "HIGH (775 balls)"
+  },
+  {
+    "player_id": 1077,
+    "name": "David Miller",
+    "category": "Overseas Veteran Match-Winner",
+    "pri_score": 74.62,
+    "role_in_rr": "Clutch Chase Finisher at #5",
+    "stat_highlight": "+61.5 SR elevation (128.7 -> 190.2 SR under pressure)",
+    "why_rr_must_buy": "Emotional homecoming to RR. Brings ice in the veins for tournament finals.",
+    "auction_tier": "Strategic Pick",
+    "sample_confidence": "HIGH (307 balls)"
+  },
+  {
+    "player_id": 19316,
+    "name": "Maheesh Theekshana",
+    "category": "Defensive Powerplay / Death Spinner",
+    "pri_score": 72.81,
+    "role_in_rr": "Boundary Denial Spinner",
+    "stat_highlight": "6.95 economy under pressure across 311 balls",
+    "why_rr_must_buy": "Denies boundary access to right-handers; high tactical flex at Jaipur.",
+    "auction_tier": "High-Value Acquisition",
+    "sample_confidence": "HIGH (311 balls)"
+  }
+]
