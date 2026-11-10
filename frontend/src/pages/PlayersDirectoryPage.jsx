@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import PlayerImage from '../components/PlayerImage';
+import FifaPlayerCard from '../components/FifaPlayerCard';
 import { fetchPlayers } from '../services/api';
 
 export default function PlayersDirectoryPage({ onSelectPlayer }) {
@@ -23,9 +24,9 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
   const [sortBy, setSortBy] = useState('pri'); // pri, name, runs, wkts
-  const [viewMode, setViewMode] = useState('grid'); // grid, table
+  const [viewMode, setViewMode] = useState('grid'); // grid (fifa cards), table
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 24;
+  const itemsPerPage = 20;
 
   useEffect(() => {
     setLoading(true);
@@ -59,7 +60,7 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
     <div className="space-y-8 pb-16">
       
       {/* Header Banner */}
-      <div className="royal-glass-card rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-navy-700 shadow-xl bg-white dark:bg-navy-850">
+      <div className="rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-navy-700 shadow-sm bg-white dark:bg-navy-850">
         <div className="max-w-3xl space-y-3">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-royal-blue/10 dark:bg-royal-blue/20 text-royal-blue dark:text-blue-400 border border-royal-blue/30 text-xs font-bold uppercase tracking-wider">
             <Users className="w-3.5 h-3.5" />
@@ -78,7 +79,7 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
       </div>
 
       {/* Control Bar: Filters, Search, View Mode */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         
         {/* Search */}
         <div className="relative flex-1 max-w-md">
@@ -127,25 +128,27 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
           <div className="flex items-center space-x-1 p-1 rounded-xl bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-navy-700">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-colors ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 viewMode === 'grid' 
-                  ? 'bg-white dark:bg-navy-750 text-royal-pink shadow-sm' 
-                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                  ? 'bg-royal-pink text-white shadow-sm' 
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
-              title="Grid View"
+              title="FIFA Player Cards View"
             >
-              <LayoutGrid className="w-4 h-4" />
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>FIFA Cards</span>
             </button>
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-lg transition-colors ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 viewMode === 'table' 
-                  ? 'bg-white dark:bg-navy-750 text-royal-pink shadow-sm' 
-                  : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                  ? 'bg-royal-pink text-white shadow-sm' 
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="Table View"
             >
-              <List className="w-4 h-4" />
+              <List className="w-3.5 h-3.5" />
+              <span>Table</span>
             </button>
           </div>
         </div>
@@ -168,116 +171,38 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
           </button>
         </div>
       ) : viewMode === 'grid' ? (
-        /* GRID VIEW */
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {paginatedPlayers.map(p => {
-            const pid = p.player_id;
-            return (
-              <div
-                key={pid}
-                onClick={() => onSelectPlayer && onSelectPlayer(pid)}
-                className="cursor-pointer p-5 rounded-2xl bg-white dark:bg-navy-850 hover:border-royal-pink/50 border border-slate-200 dark:border-navy-750 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4 group"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-3">
-                    <PlayerImage
-                      playerId={pid}
-                      name={p.player_name}
-                      imageUrl={p.image_url}
-                      role={p.primary_role}
-                      size="md"
-                      showBadge={true}
-                    />
-                    <div>
-                      <h4 className="font-display font-bold text-sm text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors leading-tight">
-                        {p.player_name}
-                      </h4>
-                      <span className="text-[11px] text-slate-500 dark:text-slate-400 block mt-0.5">
-                        {p.primary_role || 'Cricketer'}
-                      </span>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 block">
-                        {p.country || p.current_ipl_team || 'International'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="font-display font-black text-lg text-royal-pink dark:text-royal-pink font-mono block leading-none">
-                      {p.overall_pri || p.bpri || p.bopri || '—'}
-                    </span>
-                    <span className="text-[9px] uppercase font-bold text-slate-400 block mt-1">
-                      PRI Index
-                    </span>
-                  </div>
-                </div>
-
-                {/* Performance Snapshot */}
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-navy-900 border border-slate-100 dark:border-navy-800 grid grid-cols-2 gap-2 text-xs">
-                  {p.batting ? (
-                    <>
-                      <div>
-                        <span className="text-[10px] text-slate-400 block">Pressure Runs</span>
-                        <span className="font-bold text-slate-800 dark:text-slate-200">{p.batting.p_runs}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-400 block">Pressure SR</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">{p.batting.p_sr}</span>
-                      </div>
-                    </>
-                  ) : p.bowling ? (
-                    <>
-                      <div>
-                        <span className="text-[10px] text-slate-400 block">Pressure Wkts</span>
-                        <span className="font-bold text-slate-800 dark:text-slate-200">{p.bowling.p_wkts}</span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-slate-400 block">Pressure Econ</span>
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">{p.bowling.p_econ}</span>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="col-span-2 text-slate-400 text-[10px]">
-                      General squad member
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer Tag */}
-                <div className="flex items-center justify-between text-[11px] pt-1">
-                  <span className="text-slate-400 font-medium">
-                    {p.sample_confidence || 'STANDARD'} Confidence
-                  </span>
-                  <span className="text-royal-pink font-bold group-hover:translate-x-1 transition-transform inline-flex items-center">
-                    Dossier &rarr;
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+        /* FIFA ULTIMATE TEAM PLAYER CARDS GRID FOR EACH PLAYER */
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {paginatedPlayers.map(p => (
+            <FifaPlayerCard
+              key={p.player_id}
+              player={p}
+              onSelect={onSelectPlayer}
+            />
+          ))}
         </div>
       ) : (
         /* TABLE VIEW */
-        <div className="overflow-x-auto rounded-2xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 shadow-md">
-          <table className="w-full text-xs text-left">
-            <thead>
-              <tr className="bg-slate-100 dark:bg-navy-900 border-b border-slate-200 dark:border-navy-750 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px]">
-                <th className="py-3 px-4">Player</th>
-                <th className="py-3 px-3">Role</th>
-                <th className="py-3 px-3">Country / Team</th>
-                <th className="py-3 px-3 text-right">PRI Score</th>
+        <div className="overflow-x-auto rounded-3xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 shadow-sm">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 dark:bg-navy-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold border-b border-slate-200 dark:border-navy-750">
+              <tr>
+                <th className="py-3 px-4">Player & Country</th>
+                <th className="py-3 px-3">Primary Role</th>
+                <th className="py-3 px-3">IPL Team</th>
                 <th className="py-3 px-3 text-right">Pressure Runs</th>
                 <th className="py-3 px-3 text-right">Pressure SR</th>
                 <th className="py-3 px-3 text-right">Pressure Wkts</th>
                 <th className="py-3 px-3 text-right">Pressure Econ</th>
-                <th className="py-3 px-4 text-center">Confidence</th>
+                <th className="py-3 px-4 text-right">PRI Rating</th>
+                <th className="py-3 px-3 text-center">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
               {paginatedPlayers.map(p => (
-                <tr
+                <tr 
                   key={p.player_id}
-                  onClick={() => onSelectPlayer && onSelectPlayer(p.player_id)}
-                  className="cursor-pointer hover:bg-slate-50 dark:hover:bg-navy-750/50 transition-colors"
+                  className="hover:bg-slate-50 dark:hover:bg-navy-800/60 transition-colors group"
                 >
                   <td className="py-3 px-4">
                     <div className="flex items-center space-x-2.5">
@@ -286,22 +211,32 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
                         name={p.player_name}
                         imageUrl={p.image_url}
                         role={p.primary_role}
-                        size="xs"
+                        size="sm"
                       />
-                      <span className="font-bold text-slate-900 dark:text-white">{p.player_name}</span>
+                      <div>
+                        <span className="font-bold text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors block">
+                          {p.player_name}
+                        </span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                          {p.country}
+                        </span>
+                      </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-slate-600 dark:text-slate-400">{p.primary_role || '—'}</td>
-                  <td className="py-3 px-3 text-slate-500 dark:text-slate-400">{p.country || p.current_ipl_team || '—'}</td>
-                  <td className="py-3 px-3 text-right font-mono font-bold text-royal-pink">{p.overall_pri || '—'}</td>
-                  <td className="py-3 px-3 text-right font-mono text-slate-700 dark:text-slate-300">{p.batting ? p.batting.p_runs : '—'}</td>
-                  <td className="py-3 px-3 text-right font-mono text-slate-700 dark:text-slate-300">{p.batting ? p.batting.p_sr : '—'}</td>
-                  <td className="py-3 px-3 text-right font-mono text-slate-700 dark:text-slate-300">{p.bowling ? p.bowling.p_wkts : '—'}</td>
-                  <td className="py-3 px-3 text-right font-mono text-slate-700 dark:text-slate-300">{p.bowling ? p.bowling.p_econ : '—'}</td>
-                  <td className="py-3 px-4 text-center">
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-navy-750 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-navy-700">
-                      {p.sample_confidence || 'STANDARD'}
-                    </span>
+                  <td className="py-3 px-3 text-slate-600 dark:text-slate-300 font-medium">{p.primary_role}</td>
+                  <td className="py-3 px-3 text-slate-500 dark:text-slate-400">{p.current_ipl_team}</td>
+                  <td className="py-3 px-3 text-right tabular text-slate-700 dark:text-slate-300 font-bold">{p.batting ? p.batting.p_runs : '—'}</td>
+                  <td className="py-3 px-3 text-right tabular text-royal-gold font-bold">{p.batting ? p.batting.p_sr : '—'}</td>
+                  <td className="py-3 px-3 text-right tabular text-slate-700 dark:text-slate-300 font-bold">{p.bowling ? p.bowling.p_wkts : '—'}</td>
+                  <td className="py-3 px-3 text-right tabular text-royal-blue dark:text-blue-400 font-bold">{p.bowling ? p.bowling.p_econ : '—'}</td>
+                  <td className="py-3 px-4 text-right tabular font-black text-royal-pink text-sm font-mono">{p.overall_pri || p.bpri || p.bopri || '—'}</td>
+                  <td className="py-3 px-3 text-center">
+                    <button
+                      onClick={() => onSelectPlayer && onSelectPlayer(p.player_id)}
+                      className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 hover:bg-royal-pink hover:text-white dark:bg-navy-750 dark:hover:bg-royal-pink text-slate-700 dark:text-slate-300 transition-colors"
+                    >
+                      Dossier
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -312,32 +247,30 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 text-xs">
+        <div className="flex items-center justify-between p-4 bg-white dark:bg-navy-850 rounded-2xl border border-slate-200 dark:border-navy-750 text-xs">
           <span className="text-slate-500 dark:text-slate-400">
-            Showing {(currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, players.length)} of {players.length} players
+            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, players.length)} of {players.length} players
           </span>
 
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-navy-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-navy-750 transition-colors"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-navy-900 text-slate-700 dark:text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-200 transition-colors"
             >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              <span>Previous</span>
+              <ChevronLeft className="w-4 h-4" />
             </button>
 
-            <span className="font-bold text-slate-700 dark:text-slate-300 px-2">
+            <span className="font-bold text-slate-900 dark:text-white px-2">
               Page {currentPage} of {totalPages}
             </span>
 
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-navy-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-navy-750 transition-colors"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-navy-900 text-slate-700 dark:text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-200 transition-colors"
             >
-              <span>Next</span>
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -346,4 +279,3 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
     </div>
   );
 }
-

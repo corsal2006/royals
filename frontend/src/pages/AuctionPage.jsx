@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { fetchAuctionStrategy } from '../services/api';
 import PlayerImage from '../components/PlayerImage';
+import FifaPlayerCard from '../components/FifaPlayerCard';
 
 const SIMULATED_TARGETS = [
   { id: 8661, name: "Matheesha Pathirana", role: "Death Sling Yorker Pacer", estPrice: 13.5, category: "Fast Bowler", impact: "Death Econ 8.29", pri: 73.4 },
@@ -39,6 +40,7 @@ export default function AuctionPage({ onSelectPlayer }) {
   const [strategy, setStrategy] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('ALL'); // ALL, Finisher, Bowler, Spinner
+  const [auctionCardView, setAuctionCardView] = useState('cards'); // cards (FIFA), dossiers
 
   // Interactive Auction Purse Simulator State
   const [totalPurse, setTotalPurse] = useState(120); // standard ₹120 Cr IPL 2027 purse
@@ -191,30 +193,66 @@ export default function AuctionPage({ onSelectPlayer }) {
             </p>
           </div>
 
-          <div className="flex space-x-2">
-            {['ALL', 'Finisher', 'Bowler', 'Spinner'].map(cat => (
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex space-x-1.5 p-1 rounded-xl bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-navy-700">
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => setAuctionCardView('cards')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  selectedCategory === cat 
-                    ? 'bg-royal-pink text-white shadow-royal-glow' 
-                    : 'bg-slate-100 dark:bg-navy-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  auctionCardView === 'cards' 
+                    ? 'bg-royal-pink text-white shadow-sm' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                {cat === 'ALL' ? 'All Roles' : cat}
+                FIFA Cards
               </button>
-            ))}
+              <button
+                onClick={() => setAuctionCardView('dossiers')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  auctionCardView === 'dossiers' 
+                    ? 'bg-royal-pink text-white shadow-sm' 
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                Dossier Cards
+              </button>
+            </div>
+
+            <div className="flex space-x-1">
+              {['ALL', 'Finisher', 'Bowler', 'Spinner'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    selectedCategory === cat 
+                      ? 'bg-royal-pink text-white shadow-sm' 
+                      : 'bg-slate-100 dark:bg-navy-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {cat === 'ALL' ? 'All Roles' : cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Shortlist Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredTargets.map((target) => (
-            <div 
-              key={target.player_id}
-              className="bg-white dark:bg-navy-850 rounded-2xl p-6 border border-slate-200 dark:border-navy-750 hover:border-royal-pink/40 shadow-sm dark:shadow-xl transition-all space-y-4 group"
-            >
+        {auctionCardView === 'cards' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredTargets.map((target) => (
+              <FifaPlayerCard 
+                key={target.player_id}
+                player={target}
+                onSelect={onSelectPlayer}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {filteredTargets.map((target) => (
+              <div 
+                key={target.player_id}
+                className="bg-white dark:bg-navy-850 rounded-2xl p-6 border border-slate-200 dark:border-navy-750 hover:border-royal-pink/40 shadow-sm dark:shadow-xl transition-all space-y-4 group"
+              >
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-3.5">
                   <PlayerImage playerId={target.player_id} player={target} name={target.name || target.player_name} size="md" className="shadow-sm" />
@@ -279,6 +317,7 @@ export default function AuctionPage({ onSelectPlayer }) {
             </div>
           ))}
         </div>
+      )}
       </div>
 
       {/* Interactive IPL 2027 Auction Purse & Clutch Index Simulator */}

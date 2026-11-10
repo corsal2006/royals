@@ -14,11 +14,13 @@ import {
   AlertCircle
 } from 'lucide-react';
 import PlayerImage from '../components/PlayerImage';
+import FifaPlayerCard from '../components/FifaPlayerCard';
 
 export default function ClutchPage({ onSelectPlayer }) {
   const [clutchData, setClutchData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('death_bowlers'); // death_bowlers, death_batters, chase_closers, crisis_anchors
+  const [viewMode, setViewMode] = useState('fifa'); // 'fifa' | 'compact'
 
   useEffect(() => {
     fetch('/api/rankings/clutch')
@@ -121,16 +123,67 @@ export default function ClutchPage({ onSelectPlayer }) {
         </div>
       </div>
 
+      {/* Section Header & View Toggle */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-display font-black text-slate-900 dark:text-white flex items-center space-x-2">
+            <Crown className="w-5 h-5 text-royal-gold" />
+            <span>Top Ranked Tactical Candidates ({currentList.length})</span>
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Grounded in delivery-level match telemetry (2022–2026).
+          </p>
+        </div>
+
+        <div className="flex items-center space-x-2 bg-slate-100 dark:bg-navy-900 p-1 rounded-xl border border-slate-200 dark:border-navy-750">
+          <button
+            onClick={() => setViewMode('fifa')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              viewMode === 'fifa'
+                ? 'bg-royal-pink text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            FIFA Cards View
+          </button>
+          <button
+            onClick={() => setViewMode('compact')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              viewMode === 'compact'
+                ? 'bg-royal-pink text-white shadow-sm'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            Compact Dossiers
+          </button>
+        </div>
+      </div>
+
       {/* Roster Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {currentList.map((p, index) => {
-          const pid = p.player_id;
-          return (
-            <div
-              key={pid || index}
-              onClick={() => onSelectPlayer && onSelectPlayer(pid)}
-              className="cursor-pointer p-5 rounded-2xl bg-white dark:bg-navy-850 hover:border-royal-pink/50 border border-slate-200 dark:border-navy-750 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4 group"
-            >
+      {viewMode === 'fifa' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {currentList.map((p, index) => (
+            <div key={p.player_id || index} className="relative">
+              <div className="absolute -top-2.5 -left-2.5 z-20 w-7 h-7 rounded-full bg-slate-900 text-white border-2 border-amber-400 flex items-center justify-center font-display font-black text-xs shadow-md">
+                #{index + 1}
+              </div>
+              <FifaPlayerCard 
+                player={p} 
+                onSelect={onSelectPlayer}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {currentList.map((p, index) => {
+            const pid = p.player_id;
+            return (
+              <div
+                key={pid || index}
+                onClick={() => onSelectPlayer && onSelectPlayer(pid)}
+                className="cursor-pointer p-5 rounded-2xl bg-white dark:bg-navy-850 hover:border-royal-pink/50 border border-slate-200 dark:border-navy-750 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4 group"
+              >
               <div>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
@@ -237,6 +290,7 @@ export default function ClutchPage({ onSelectPlayer }) {
           );
         })}
       </div>
+      )}
 
     </div>
   );
