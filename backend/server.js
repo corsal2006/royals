@@ -310,31 +310,56 @@ app.get('/api/players', (req, res) => {
 
 // 9. Single Player Deep Profile / Details
 app.get(['/api/player/:id', '/api/player-details/:id'], (req, res) => {
-  const pid = parseInt(req.params.id);
-  const player = playersMaster[pid];
+  const rawParam = req.params.id;
+  const pid = parseInt(rawParam);
+  let player = !isNaN(pid) ? playersMaster[pid] : null;
 
   if (!player) {
-    // Try matching by name if ID was passed as string name
-    const matchByName = Object.values(playersMaster).find(p => 
-      p.player_name.toLowerCase() === req.params.id.toLowerCase()
+    // Try matching by name or slug if ID was passed as string
+    const normalizedQuery = String(rawParam).toLowerCase().replace(/[-_]/g, ' ').trim();
+    player = Object.values(playersMaster).find(p => 
+      p.player_name.toLowerCase() === String(rawParam).toLowerCase() ||
+      p.player_name.toLowerCase().replace(/[-_]/g, ' ').trim() === normalizedQuery
     );
-    if (matchByName) {
-      return res.json(matchByName);
-    }
-    return res.status(404).json({ error: 'Player not found in database.' });
   }
 
-  res.json(player);
+  if (!player) {
+    return res.status(404).json({ error: `Player '${rawParam}' not found in database.` });
+  }
+
+  res.json(enrichPlayer(player));
 });
 
 // 10. Multi-Player Comparison API (Head to head)
 app.get('/api/compare', (req, res) => {
-  const ids = (req.query.ids || '').split(',').map(id => parseInt(id.trim())).filter(Boolean);
-  if (ids.length < 2) {
-    return res.status(400).json({ error: 'Please provide at least two player IDs for comparison (e.g. ?ids=1699,813).' });
+  let targets = [];
+  if (req.query.ids) {
+    targets = req.query.ids.split(',').map(s => s.trim()).filter(Boolean);
+  } else if (req.query.p1 && req.query.p2) {
+    targets = [req.query.p1, req.query.p2];
+  } else if (req.query.player1 && req.query.player2) {
+    targets = [req.query.player1, req.query.player2];
   }
 
-  const compared = ids.map(id => playersMaster[id]).filter(Boolean);
+  if (targets.length < 2) {
+    return res.status(400).json({ error: 'Please provide at least two players for comparison (e.g. ?ids=1699,813 or ?p1=1699&p2=813).' });
+  }
+
+  function resolvePlayer(term) {
+    const num = parseInt(term);
+    if (!isNaN(num) && playersMaster[num]) return playersMaster[num];
+    const norm = String(term).toLowerCase().replace(/[-_]/g, ' ').trim();
+    return Object.values(playersMaster).find(p => 
+      p.player_name.toLowerCase() === String(term).toLowerCase() ||
+      p.player_name.toLowerCase().replace(/[-_]/g, ' ').trim() === norm
+    );
+  }
+
+  const compared = targets.map(resolvePlayer).filter(Boolean).map(enrichPlayer);
+  if (compared.length < 2) {
+    return res.status(400).json({ error: 'One or more specified players could not be resolved for comparison.' });
+  }
+
   res.json({
     count: compared.length,
     players: compared
@@ -385,7 +410,7 @@ app.get(['/api/auction', '/api/auction-intelligence'], (req, res) => {
 });
 
 // 12. Clutch Performers Spotlight (Death overs, High RRR, Collapse recovery)
-app.get('/api/rankings/clutch', (req, res) => {
+app.get(['/api/rankings/clutch', '/api/clutch'], (req, res) => {
   const allPlayers = Object.values(playersMaster);
 
   // 1. Death Overs Specialists (Overs 17-20)
