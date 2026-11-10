@@ -1,0 +1,15 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\megha\\.venv\\Scripts\\python.exe",
+  "python.analysis.extraPaths": [
+    "C:\\Users\\megha\\.venv\\Lib\\site-packages",
+    "C:\\Users\\megha\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages",
+    "${workspaceFolder}",
+    "${workspaceFolder}/pipeline"
+  ],
+  "python.autoComplete.extraPaths": [
+    "C:\\Users\\megha\\.venv\\Lib\\site-packages",
+    "C:\\Users\\megha\\AppData\\Local\\Programs\\Python\\Python310\\lib\\site-packages",
+    "${workspaceFolder}",
+    "${workspaceFolder}/pipeline"
+  ]
+}
