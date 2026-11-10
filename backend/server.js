@@ -316,11 +316,24 @@ app.get(['/api/player/:id', '/api/player-details/:id'], (req, res) => {
 
   if (!player) {
     // Try matching by name or slug if ID was passed as string
-    const normalizedQuery = String(rawParam).toLowerCase().replace(/[-_]/g, ' ').trim();
+    let normalizedQuery = String(rawParam).toLowerCase().replace(/[-_]/g, ' ').trim();
+    if (normalizedQuery === 'pat cummins') normalizedQuery = 'patrick cummins';
+
     player = Object.values(playersMaster).find(p => 
       p.player_name.toLowerCase() === String(rawParam).toLowerCase() ||
       p.player_name.toLowerCase().replace(/[-_]/g, ' ').trim() === normalizedQuery
     );
+
+    // Fallback: search for words in player name
+    if (!player) {
+      const parts = normalizedQuery.split(' ').filter(Boolean);
+      if (parts.length > 0) {
+        player = Object.values(playersMaster).find(p => {
+          const pName = p.player_name.toLowerCase();
+          return parts.every(part => pName.includes(part));
+        });
+      }
+    }
   }
 
   if (!player) {
@@ -348,11 +361,25 @@ app.get('/api/compare', (req, res) => {
   function resolvePlayer(term) {
     const num = parseInt(term);
     if (!isNaN(num) && playersMaster[num]) return playersMaster[num];
-    const norm = String(term).toLowerCase().replace(/[-_]/g, ' ').trim();
-    return Object.values(playersMaster).find(p => 
+    let norm = String(term).toLowerCase().replace(/[-_]/g, ' ').trim();
+    if (norm === 'pat cummins') norm = 'patrick cummins';
+
+    // Exact or normalized match
+    let match = Object.values(playersMaster).find(p => 
       p.player_name.toLowerCase() === String(term).toLowerCase() ||
       p.player_name.toLowerCase().replace(/[-_]/g, ' ').trim() === norm
     );
+    if (match) return match;
+
+    // Substring / word matching
+    const parts = norm.split(' ').filter(Boolean);
+    if (parts.length > 0) {
+      match = Object.values(playersMaster).find(p => {
+        const pName = p.player_name.toLowerCase();
+        return parts.every(part => pName.includes(part));
+      });
+    }
+    return match;
   }
 
   const compared = targets.map(resolvePlayer).filter(Boolean).map(enrichPlayer);
