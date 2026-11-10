@@ -13,8 +13,10 @@ import {
   Zap,
   BarChart2,
   Calendar,
-  Globe
+  Globe,
+  Printer
 } from 'lucide-react';
+import PlayerImage from './PlayerImage';
 import { 
   BarChart, 
   Bar, 
@@ -60,29 +62,39 @@ export default function PlayerModal({ player, onClose, onCompare }) {
   ] : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/80 backdrop-blur-md">
-      <div className="relative w-full max-w-4xl royal-glass-card rounded-2xl border border-navy-700 shadow-2xl overflow-hidden my-8 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/75 backdrop-blur-md">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-navy-750 shadow-2xl overflow-hidden my-8 max-h-[90vh] flex flex-col">
         
         {/* Top Header Card */}
-        <div className="relative p-6 sm:p-8 bg-gradient-to-r from-navy-950 via-navy-850 to-navy-900 border-b border-navy-700/80">
-          <button 
-            onClick={onClose}
-            className="absolute top-5 right-5 p-2 rounded-xl bg-navy-800/80 hover:bg-navy-700 text-slate-400 hover:text-white transition-all border border-navy-700"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        <div className="relative p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-navy-900 to-navy-950 dark:from-navy-950 dark:via-navy-900 dark:to-navy-850 border-b border-slate-200 dark:border-slate-200 dark:border-navy-750 text-white">
+          <div className="absolute top-5 right-5 flex items-center space-x-2">
+            <button
+              onClick={() => window.print()}
+              className="p-2 rounded-xl bg-navy-800/80 hover:bg-navy-700 text-slate-300 hover:text-white transition-all border border-navy-700 flex items-center space-x-1.5 text-xs font-semibold"
+              title="Print / Save Player Scouting Dossier"
+            >
+              <Printer className="w-4 h-4 text-royal-gold" />
+              <span className="hidden sm:inline">Print Dossier</span>
+            </button>
+            <button 
+              onClick={onClose}
+              className="p-2 rounded-xl bg-navy-800/80 hover:bg-navy-700 text-slate-400 hover:text-white transition-all border border-navy-700"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pr-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pr-24">
             <div className="flex items-center space-x-5">
-              {/* Player Avatar */}
-              <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-navy-800 to-navy-700 border-2 border-royal-pink/40 shadow-royal-glow">
-                <span className="font-display font-black text-3xl text-white">
-                  {player.player_name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                </span>
-                <span className="absolute -bottom-2 -right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-navy-900 border border-royal-gold text-royal-gold">
-                  {player.country}
-                </span>
-              </div>
+              {/* Centralized Verified Player Photograph */}
+              <PlayerImage
+                playerId={player.player_id}
+                name={player.player_name}
+                imageUrl={player.image_url}
+                role={player.primary_role}
+                size="lg"
+                showBadge={true}
+              />
 
               {/* Bio & Role */}
               <div>
@@ -135,7 +147,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
         </div>
 
         {/* Sub-Navigation Tabs */}
-        <div className="flex border-b border-navy-700 bg-navy-900/60 px-6 overflow-x-auto scrollbar-none">
+        <div className="flex border-b border-slate-200 dark:border-slate-200 dark:border-navy-750 bg-slate-100 dark:bg-navy-950 px-6 overflow-x-auto no-scrollbar">
           {[
             { id: 'overview', label: 'Overview & Pressure Delta' },
             { id: 'situational', label: 'Situational & Clutches' },
@@ -147,8 +159,8 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               onClick={() => setActiveSubTab(tab.id)}
               className={`py-3 px-4 text-xs font-bold border-b-2 transition-all whitespace-nowrap ${
                 activeSubTab === tab.id
-                  ? 'border-royal-pink text-royal-pink bg-royal-pink/5'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'border-royal-pink text-royal-pink bg-royal-pink/5 dark:bg-royal-pink/10'
+                  : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
               {tab.label}
@@ -157,7 +169,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200">
           
           {/* TAB 1: OVERVIEW & PRESSURE DELTA */}
           {activeSubTab === 'overview' && (
@@ -166,13 +178,13 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {isBatter && (
                   <>
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Pressure Runs</span>
                       <span className="text-xl font-display font-bold text-white tabular">{player.batting.p_runs}</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">Off {player.batting.p_balls} pressure balls</span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Pressure Strike Rate</span>
                       <span className="text-xl font-display font-bold text-royal-gold tabular">{player.batting.p_sr}</span>
                       <span className={`text-[10px] font-bold block mt-0.5 ${player.batting.delta_sr >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -180,13 +192,13 @@ export default function PlayerModal({ player, onClose, onCompare }) {
                       </span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Pressure Average</span>
                       <span className="text-xl font-display font-bold text-white tabular">{player.batting.p_avg}</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">{player.batting.p_outs} dismissals</span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Boundary Firepower</span>
                       <span className="text-xl font-display font-bold text-royal-pink tabular">{player.batting.p_bound_pct}%</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">{player.batting.p_fours} 4s • {player.batting.p_sixes} 6s</span>
@@ -196,13 +208,13 @@ export default function PlayerModal({ player, onClose, onCompare }) {
 
                 {isBowler && (
                   <>
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Pressure Wickets</span>
                       <span className="text-xl font-display font-bold text-white tabular">{player.bowling.p_wkts}</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">In {player.bowling.p_balls} balls</span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Pressure Economy</span>
                       <span className="text-xl font-display font-bold text-royal-gold tabular">{player.bowling.p_econ}</span>
                       <span className={`text-[10px] font-bold block mt-0.5 ${player.bowling.delta_econ >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -210,13 +222,13 @@ export default function PlayerModal({ player, onClose, onCompare }) {
                       </span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Bowling Strike Rate</span>
                       <span className="text-xl font-display font-bold text-white tabular">{player.bowling.p_sr}</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">Balls per wicket</span>
                     </div>
 
-                    <div className="bg-navy-850/80 p-3.5 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-[11px] font-medium text-slate-400 block">Dot Ball Pressure</span>
                       <span className="text-xl font-display font-bold text-royal-cyan tabular">{player.bowling.p_dot_pct}%</span>
                       <span className="text-[10px] text-slate-500 block mt-0.5">{player.bowling.p_bound_prev}% bound prev</span>
@@ -226,7 +238,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               </div>
 
               {/* Normal vs Pressure Delta Comparison Chart */}
-              <div className="bg-navy-850/60 p-5 rounded-2xl border border-navy-750">
+              <div className="bg-navy-850/60 p-5 rounded-2xl border border-slate-200 dark:border-navy-750">
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-sm font-bold text-white flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4 text-royal-pink" />
@@ -282,7 +294,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {isBatter && (
                   <>
-                    <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-xs font-bold text-royal-gold uppercase tracking-wider block mb-1">
                         Chasing in Innings 2 Under Pressure
                       </span>
@@ -297,7 +309,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
                       </p>
                     </div>
 
-                    <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-xs font-bold text-royal-pink uppercase tracking-wider block mb-1">
                         Death Overs Acceleration (16-20)
                       </span>
@@ -316,7 +328,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
 
                 {isBowler && (
                   <>
-                    <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-xs font-bold text-royal-gold uppercase tracking-wider block mb-1">
                         Defending Totals (Innings 2)
                       </span>
@@ -330,7 +342,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
                       </p>
                     </div>
 
-                    <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                    <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                       <span className="text-xs font-bold text-royal-pink uppercase tracking-wider block mb-1">
                         Death Overs Closure (16-20)
                       </span>
@@ -350,7 +362,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
 
               {/* Top Pressure Match Involvements */}
               {isBatter && player.batting.top_knocks && player.batting.top_knocks.length > 0 && (
-                <div className="bg-navy-850/60 p-4 rounded-xl border border-navy-750">
+                <div className="bg-navy-850/60 p-4 rounded-xl border border-slate-200 dark:border-navy-750">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
                     Top Pressure Knocks in Dataset
                   </h4>
@@ -370,7 +382,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               )}
 
               {isBowler && player.bowling.top_spells && player.bowling.top_spells.length > 0 && (
-                <div className="bg-navy-850/60 p-4 rounded-xl border border-navy-750">
+                <div className="bg-navy-850/60 p-4 rounded-xl border border-slate-200 dark:border-navy-750">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
                     Top Pressure Bowling Spells in Dataset
                   </h4>
@@ -395,7 +407,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
           {activeSubTab === 'phases' && (
             <div className="space-y-6">
               {phaseData.length > 0 && (
-                <div className="bg-navy-850/60 p-5 rounded-2xl border border-navy-750">
+                <div className="bg-navy-850/60 p-5 rounded-2xl border border-slate-200 dark:border-navy-750">
                   <h4 className="text-sm font-bold text-white mb-4">
                     Career Batting Distribution by Match Phase
                   </h4>
@@ -417,7 +429,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
               {/* Stroke / Delivery Style Breakdown */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {isBatter && player.batting.top_strokes && (
-                  <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                  <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                     <h5 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
                       Most Productive Strokes Under Pressure
                     </h5>
@@ -433,7 +445,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
                 )}
 
                 {isBowler && player.bowling.top_delivery_styles && (
-                  <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                  <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                     <h5 className="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3">
                       Go-To Deliveries Under Pressure
                     </h5>
@@ -469,15 +481,15 @@ export default function PlayerModal({ player, onClose, onCompare }) {
 
               {/* Tactical Roles and Matchup Fit */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                   <span className="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Recommended RR Role</span>
                   <span className="text-sm font-bold text-white block mt-1">{player.primary_role}</span>
                 </div>
-                <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                   <span className="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Home Venue Fit (Jaipur)</span>
                   <span className="text-sm font-bold text-emerald-400 block mt-1">High Tactial Synergies</span>
                 </div>
-                <div className="bg-navy-850 p-4 rounded-xl border border-navy-750">
+                <div className="bg-slate-50 dark:bg-navy-850 p-4 rounded-2xl border border-slate-200 dark:border-slate-200 dark:border-navy-750">
                   <span className="text-[10px] font-bold uppercase text-slate-400 block tracking-wider">Sample Credibility</span>
                   <span className="text-sm font-bold text-royal-gold block mt-1">{player.sample_confidence} ({player.batting?.p_balls || player.bowling?.p_balls} balls)</span>
                 </div>
@@ -490,7 +502,7 @@ export default function PlayerModal({ player, onClose, onCompare }) {
         {/* Modal Bottom Actions */}
         <div className="p-4 bg-navy-950 border-t border-navy-800 flex justify-between items-center">
           <div className="text-[11px] text-slate-500">
-            Source: {player.metadata_source} • Verified Round 1 Submission
+            Source: {player.metadata_source} • Official Verified Player Dossier
           </div>
 
           <div className="flex items-center space-x-3">

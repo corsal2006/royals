@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import OverviewPage from './pages/OverviewPage';
-import RankingsPage from './pages/RankingsPage';
+import PlayersDirectoryPage from './pages/PlayersDirectoryPage';
 import BattersPage from './pages/BattersPage';
 import BowlersPage from './pages/BowlersPage';
 import AllRoundersPage from './pages/AllRoundersPage';
 import FieldersPage from './pages/FieldersPage';
+import ClutchPage from './pages/ClutchPage';
 import ComparisonPage from './pages/ComparisonPage';
 import AuctionPage from './pages/AuctionPage';
 import MethodologyPage from './pages/MethodologyPage';
-import SubmissionDeckPage from './pages/SubmissionDeckPage';
 import PlayerModal from './components/PlayerModal';
+import ScoutingAssistant from './components/ScoutingAssistant';
 import { fetchOverview, fetchPlayer } from './services/api';
 
 export default function App() {
@@ -18,6 +19,22 @@ export default function App() {
   const [overviewData, setOverviewData] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Dual-Theme System (Light & Dark Mode)
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('royal_scout_theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('royal_scout_theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     fetchOverview()
@@ -47,12 +64,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-navy-950 text-slate-100 antialiased selection:bg-royal-pink selection:text-white">
-      {/* Main Navbar */}
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-navy-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+      
+      {/* Navigation Header */}
       <Navbar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
         onSelectPlayer={handleSelectPlayer}
+        theme={theme}
+        setTheme={setTheme}
       />
 
       {/* Main Content Viewport */}
@@ -60,7 +80,9 @@ export default function App() {
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
             <div className="w-12 h-12 rounded-full border-4 border-royal-pink/20 border-t-royal-pink animate-spin"></div>
-            <p className="text-sm font-semibold text-slate-400">Loading Royal Scout AI Intelligence...</p>
+            <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+              Loading Royal Scout AI Intelligence...
+            </p>
           </div>
         ) : (
           <>
@@ -72,8 +94,8 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'rankings' && (
-              <RankingsPage 
+            {activeTab === 'players' && (
+              <PlayersDirectoryPage 
                 onSelectPlayer={handleSelectPlayer} 
               />
             )}
@@ -102,6 +124,12 @@ export default function App() {
               />
             )}
 
+            {activeTab === 'clutch' && (
+              <ClutchPage 
+                onSelectPlayer={handleSelectPlayer} 
+              />
+            )}
+
             {activeTab === 'compare' && (
               <ComparisonPage 
                 onSelectPlayer={handleSelectPlayer} 
@@ -117,13 +145,12 @@ export default function App() {
             {activeTab === 'methodology' && (
               <MethodologyPage />
             )}
-
-            {activeTab === 'deck' && (
-              <SubmissionDeckPage />
-            )}
           </>
         )}
       </main>
+
+      {/* Embedded AI Scouting Assistant Widget */}
+      <ScoutingAssistant onSelectPlayer={handleSelectPlayer} />
 
       {/* Dedicated Player Dossier Modal */}
       {selectedPlayer && (
@@ -134,23 +161,24 @@ export default function App() {
         />
       )}
 
-      {/* Footer */}
-      <footer className="border-t border-navy-800 bg-navy-950 py-8 px-4 sm:px-6 lg:px-8 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+      {/* Professional Brand Footer */}
+      <footer className="border-t border-slate-200 dark:border-navy-800 bg-white dark:bg-navy-950 py-8 px-4 sm:px-6 lg:px-8 mt-auto print:hidden">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
           <div className="flex items-center space-x-2">
-            <span className="font-display font-bold text-slate-300">ROYAL SCOUT AI</span>
+            <span className="font-display font-black text-slate-900 dark:text-white">ROYAL SCOUT AI</span>
             <span>•</span>
-            <span>SuperRR Selector Season 2 • Round 1 Official Build</span>
+            <span>IPL Player Intelligence & Auction Analytics</span>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <span>IPL 2022–2026 & T20I Dataset</span>
-            <span>Bayesian Sample Shrinkage</span>
-            <span>Rajasthan Royals Auction Support</span>
+          <div className="flex flex-wrap items-center gap-4 text-[11px]">
+            <span>Rajasthan Royals Auction Strategy</span>
+            <span>200,999 Deliveries Processed</span>
+            <span>Bayesian Shrinkage Applied</span>
+            <span className="font-semibold text-royal-pink">IPL 2027</span>
           </div>
         </div>
       </footer>
+
     </div>
   );
 }
-

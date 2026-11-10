@@ -8,19 +8,25 @@ import {
   GitCompare, 
   Crown, 
   BookOpen, 
-  Presentation,
   Download,
   Activity,
   Layers,
   Search,
-  X
+  X,
+  Sun,
+  Moon,
+  Menu,
+  ChevronRight,
+  FileText
 } from 'lucide-react';
+import PlayerImage from './PlayerImage';
 import { fetchPlayers } from '../services/api';
 
-export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
+export default function Navbar({ activeTab, setActiveTab, onSelectPlayer, theme, setTheme }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchRef = useRef(null);
 
   useEffect(() => {
@@ -58,61 +64,77 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
 
   const navItems = [
     { id: 'overview', label: 'Overview', icon: Activity },
-    { id: 'rankings', label: 'Official Top 10', icon: Trophy, badge: 'Unstop' },
+    { id: 'players', label: 'Players', icon: Users },
     { id: 'batters', label: 'Batters', icon: Flame },
     { id: 'bowlers', label: 'Bowlers', icon: Crosshair },
     { id: 'allrounders', label: 'All-Rounders', icon: Layers },
-    { id: 'fielders', label: 'Fielders & WK', icon: Users },
-    { id: 'compare', label: 'Comparison', icon: GitCompare },
+    { id: 'fielders', label: 'Fielders & WK', icon: Trophy },
+    { id: 'clutch', label: 'Clutch Spotlight', icon: ZapIcon },
+    { id: 'compare', label: 'Comparison Studio', icon: GitCompare },
     { id: 'auction', label: 'RR Auction 2027', icon: Crown, highlight: true },
     { id: 'methodology', label: 'Methodology', icon: BookOpen },
-    { id: 'deck', label: 'Judging Deck', icon: Presentation, special: true }
   ];
 
+  function ZapIcon(props) {
+    return <Flame {...props} />;
+  }
+
   return (
-    <header className="sticky top-0 z-40 w-full royal-glass border-b border-navy-700 shadow-xl">
+    <header className="sticky top-0 z-40 w-full royal-glass border-b border-slate-200 dark:border-navy-700 shadow-sm transition-colors duration-200">
+      
       {/* Top Brand Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Logo & Hackathon Badge */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('overview')}>
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-royal-pink via-purple-900 to-royal-blue shadow-royal-glow border border-white/20">
-              <Crown className="w-6 h-6 text-royal-gold animate-pulse" />
-              <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-navy-900" title="Pressure Engine Live"></div>
+          {/* Logo & Product Title */}
+          <div 
+            className="flex items-center space-x-3 cursor-pointer group" 
+            onClick={() => setActiveTab('overview')}
+          >
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-white dark:bg-navy-800 p-1 shadow-md border border-slate-200 dark:border-navy-700">
+              <img 
+                src="/rr_logo.png" 
+                alt="Rajasthan Royals" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<span class="font-display font-black text-royal-pink text-sm">RR</span>';
+                }}
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-display font-black text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                <span className="font-display font-black text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">
                   ROYAL SCOUT <span className="text-royal-pink">AI</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-royal-pink/20 text-royal-pink border border-royal-pink/30">
-                  Round 1
+                <span className="hidden sm:inline-block text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-royal-pink/10 text-royal-pink border border-royal-pink/30">
+                  IPL 2027
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-medium">
-                SuperRR Selector 2.0 • Pressure Reliability Intelligence
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-none">
+                IPL Player Intelligence & Auction Analytics
               </p>
             </div>
           </div>
 
           {/* Quick Actions & Global Search */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
+            
             {/* Global Search Input */}
-            <div ref={searchRef} className="relative hidden md:block w-48 lg:w-60">
+            <div ref={searchRef} className="relative hidden md:block w-48 lg:w-64">
               <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search any player..."
+                placeholder="Search player or team..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchResults.length > 0) setIsSearching(true); }}
-                className="w-full pl-8 pr-7 py-1.5 bg-navy-800/90 hover:bg-navy-800 focus:bg-navy-800 border border-navy-700 focus:border-royal-pink rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none transition-all"
+                className="w-full pl-8 pr-7 py-1.5 bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 focus:border-royal-pink rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-all shadow-inner"
               />
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(''); setIsSearching(false); }}
-                  className="absolute right-2.5 top-2.5 text-slate-500 hover:text-white"
+                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -120,18 +142,27 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
 
               {/* Autocomplete Dropdown */}
               {isSearching && searchResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-navy-950/95 border border-navy-700 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-navy-850 backdrop-blur-xl">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-slate-100 dark:divide-navy-800">
                   {searchResults.map(p => (
                     <div
                       key={p.player_id}
                       onClick={() => handleSelect(p.player_id)}
-                      className="p-2.5 hover:bg-navy-800/80 cursor-pointer flex items-center justify-between text-xs transition-colors"
+                      className="p-2.5 hover:bg-slate-50 dark:hover:bg-navy-800 cursor-pointer flex items-center justify-between text-xs transition-colors"
                     >
-                      <div>
-                        <span className="font-bold text-white block text-xs">{p.player_name}</span>
-                        <span className="text-[10px] text-slate-400">{p.country} • {p.current_ipl_team}</span>
+                      <div className="flex items-center space-x-2.5 min-w-0">
+                        <PlayerImage
+                          playerId={p.player_id}
+                          name={p.player_name}
+                          imageUrl={p.image_url}
+                          role={p.primary_role}
+                          size="xs"
+                        />
+                        <div className="truncate">
+                          <span className="font-bold text-slate-900 dark:text-white block text-xs truncate">{p.player_name}</span>
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate block">{p.primary_role} • {p.country}</span>
+                        </div>
                       </div>
-                      <span className="text-[11px] font-black text-royal-pink tabular">
+                      <span className="text-[11px] font-black text-royal-pink font-mono pl-2 shrink-0">
                         PRI {p.overall_pri || p.bpri || p.bopri}
                       </span>
                     </div>
@@ -140,30 +171,56 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
               )}
             </div>
 
+            {/* Light / Dark Mode Toggle */}
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-2 rounded-xl bg-slate-100 dark:bg-navy-800 hover:bg-slate-200 dark:hover:bg-navy-750 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-navy-700 transition-colors shadow-sm"
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-royal-gold" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-700" />
+              )}
+            </button>
+
+            {/* Export CSV Download */}
             <a
               href="/api/export/csv"
-              download="UNSTOP_SUBMISSION_RANKINGS.csv"
-              className="hidden lg:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-navy-800 hover:bg-navy-700 text-slate-200 border border-navy-700 hover:border-slate-500 transition-all shadow-sm"
-              title="Download official Unstop-compliant Top 10 CSV rankings"
+              download="RR_AUCTION_SCOUTING_RANKINGS.csv"
+              className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-navy-800 hover:bg-slate-200 dark:hover:bg-navy-750 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-navy-700 transition-all shadow-sm"
+              title="Download verified player scouting rankings CSV"
             >
-              <Download className="w-3.5 h-3.5 text-royal-gold" />
-              <span>Export Unstop CSV</span>
+              <Download className="w-3.5 h-3.5 text-royal-pink" />
+              <span>Export CSV</span>
             </a>
 
+            {/* Print / PDF Trigger */}
             <button
-              onClick={() => setActiveTab('deck')}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-royal-pink to-pink-600 hover:from-royal-pink-hover hover:to-pink-500 text-white shadow-royal-glow transition-all"
+              onClick={() => window.print()}
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-royal-pink hover:bg-royal-pink-hover text-white shadow-royal-glow transition-all"
+              title="Export professional print-ready dossier"
             >
-              <Presentation className="w-3.5 h-3.5" />
-              <span>Judge Walkthrough</span>
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Export PDF</span>
+            </button>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-navy-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-navy-700"
+              aria-label="Toggle Navigation Menu"
+            >
+              <Menu className="w-4 h-4" />
             </button>
           </div>
 
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-navy-800/80 overflow-x-auto scrollbar-none">
+      {/* Desktop Navigation Items */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-navy-800 overflow-x-auto no-scrollbar hidden md:block">
         <nav className="flex space-x-1 py-1.5 min-w-max">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -172,25 +229,18 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`relative flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
                   isActive 
                     ? item.highlight 
-                      ? 'bg-gradient-to-r from-royal-pink/25 to-pink-600/20 text-royal-pink border border-royal-pink/40 shadow-sm' 
-                      : 'bg-navy-750 text-white border border-royal-blue/40 shadow-sm'
+                      ? 'bg-gradient-to-r from-royal-pink/20 to-pink-600/10 text-royal-pink border border-royal-pink/40 shadow-sm' 
+                      : 'bg-royal-blue/10 dark:bg-navy-750 text-royal-blue dark:text-white border border-royal-blue/30 dark:border-royal-blue/40 shadow-sm'
                     : item.highlight
-                      ? 'text-royal-pink/90 hover:bg-royal-pink/10 hover:text-white'
-                      : item.special
-                        ? 'text-royal-gold hover:bg-royal-gold/10'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-navy-800/60'
+                      ? 'text-royal-pink hover:bg-royal-pink/10'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800/60'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? (item.highlight ? 'text-royal-pink' : 'text-royal-gold') : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? (item.highlight ? 'text-royal-pink' : 'text-royal-blue dark:text-royal-gold') : 'text-slate-400'}`} />
                 <span>{item.label}</span>
-                {item.badge && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-royal-blue/30 text-royal-blue-light border border-royal-blue/40">
-                    {item.badge}
-                  </span>
-                )}
                 {item.highlight && !isActive && (
                   <span className="w-1.5 h-1.5 rounded-full bg-royal-pink animate-ping"></span>
                 )}
@@ -199,7 +249,47 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer }) {
           })}
         </nav>
       </div>
+
+      {/* Mobile Drawer Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-slate-200 dark:border-navy-800 bg-white dark:bg-navy-900 p-4 space-y-2">
+          {/* Mobile search */}
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="Search player name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-navy-800 text-slate-900 dark:text-white border border-slate-200 dark:border-navy-700"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-1.5">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center space-x-2 p-2.5 rounded-xl text-xs font-semibold text-left transition-colors ${
+                    isActive
+                      ? 'bg-royal-pink text-white shadow-sm'
+                      : 'bg-slate-50 dark:bg-navy-800 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
     </header>
   );
 }
-

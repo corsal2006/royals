@@ -1,6 +1,6 @@
 # ROYAL SCOUT AI — DATA DICTIONARY & SCHEMA DOCUMENTATION
 
-**SuperRR Selector 2.0 • Round 1: Identify the Most Reliable Players Under Pressure**  
+**Rajasthan Royals Official Decision Support System • High-Leverage Reliability Analytics**  
 **Dataset Coverage:** Indian Premier League (IPL 2022–2026) and T20 Internationals (T20I 2022–2026)  
 **Total Records:** 200,999 Deliveries • 883 Matches • 353 Teams • 141 Competitions • 28,381 Playing XI entries  
 

@@ -71,9 +71,11 @@ def run_tests():
         test_results.append(("SQLite Verification", "FAILED: " + str(e)))
         print("  • SQLite Error:", e)
 
-    # 3. Test Unstop CSV Submission File
-    print("\n[TEST 3] Verifying Official Unstop Submission CSV...")
-    csv_path = os.path.join(DOCS_DIR, "UNSTOP_SUBMISSION_RANKINGS.csv")
+    # 3. Test Export CSV File
+    print("\n[TEST 3] Verifying Official Pressure Rankings Export CSV...")
+    csv_path = os.path.join(DOCS_DIR, "ROYAL_SCOUT_PRESSURE_RANKINGS.csv")
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(DOCS_DIR, "UNSTOP_SUBMISSION_RANKINGS.csv")
     if os.path.exists(csv_path):
         df_csv = pd.read_csv(csv_path, keep_default_na=False)
         batters_csv = df_csv[df_csv['Category'] == 'Batter']
@@ -84,13 +86,13 @@ def run_tests():
         no_empty_strings = not (df_csv.values == '').any()
         
         passed = check_ranks_bat and check_ranks_bowl and no_empty_strings
-        test_results.append(("Unstop CSV Format & Ranks", "PASSED" if passed else "FAILED"))
+        test_results.append(("Export CSV Format & Ranks", "PASSED" if passed else "FAILED"))
         print(f"  • CSV Total Rows: {len(df_csv)} (10 Batters, 10 Bowlers)")
         print(f"  • Batters Ranks 1-10 Sequential: {check_ranks_bat}")
         print(f"  • Bowlers Ranks 1-10 Sequential: {check_ranks_bowl}")
         print(f"  • Zero Empty Cells: {no_empty_strings}")
     else:
-        test_results.append(("Unstop CSV Existence", "FAILED"))
+        test_results.append(("Export CSV Existence", "FAILED"))
         print("  • CSV file missing!")
 
     # 4. Test Live Backend Endpoints
@@ -108,6 +110,8 @@ def run_tests():
         "/api/compare?ids=1699,813,6281",
         "/api/auction",
         "/api/methodology",
+        "/api/images",
+        "/api/rankings/clutch",
         "/api/export/csv"
     ]
     

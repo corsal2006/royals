@@ -19,6 +19,7 @@ let top10Bowlers = [];
 let allRounders = [];
 let rrAuctionTargets = [];
 let overviewStats = {};
+let playerImages = {};
 
 try {
   playersMaster = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'players_master.json'), 'utf8'));
@@ -27,19 +28,50 @@ try {
   allRounders = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'all_rounders.json'), 'utf8'));
   rrAuctionTargets = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'rr_auction_targets.json'), 'utf8'));
   overviewStats = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'overview_stats.json'), 'utf8'));
-  console.log(`[ROYAL SCOUT AI] Successfully loaded ${Object.keys(playersMaster).length} player records into memory.`);
+  
+  if (fs.existsSync(path.join(DATA_DIR, 'player_images.json'))) {
+    playerImages = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'player_images.json'), 'utf8'));
+  }
+  
+  // Attach image_url to playersMaster
+  for (const [pid, player] of Object.entries(playersMaster)) {
+    if (playerImages[pid]) {
+      player.image_url = playerImages[pid].image_url;
+      player.image_verified = true;
+    }
+  }
+
+  console.log(`[ROYAL SCOUT AI] Loaded ${Object.keys(playersMaster).length} player records & ${Object.keys(playerImages).length} verified photos.`);
 } catch (err) {
   console.error('[ROYAL SCOUT AI] Error loading dataset files:', err.message);
+}
+
+// Helper to enrich player with image
+function enrichPlayer(p) {
+  if (!p) return null;
+  const idStr = String(p.player_id || p.striker_id || p.bowler_id);
+  const imgMeta = playerImages[idStr];
+  return {
+    ...p,
+    image_url: imgMeta ? imgMeta.image_url : null,
+    image_verified: !!imgMeta
+  };
 }
 
 // 1. Health check & System Info
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    system: 'ROYAL SCOUT AI — Official Round 1 Decision Support Engine',
+    system: 'ROYAL SCOUT AI — Professional IPL Player Intelligence & Auction Decision Engine',
     timestamp: new Date().toISOString(),
-    total_players: Object.keys(playersMaster).length
+    total_players: Object.keys(playersMaster).length,
+    verified_images: Object.keys(playerImages).length
   });
+});
+
+// 2. Verified Player Images Directory
+app.get('/api/images', (req, res) => {
+  res.json(playerImages);
 });
 
 // 2. Executive Overview Stats
@@ -52,7 +84,7 @@ app.get('/api/overview', (req, res) => {
   });
 });
 
-// 3. Official Unstop Submission Top 10 Dropdowns & Tables
+// 3. Official Pressure Rankings Top 10 Dropdowns & Tables
 app.get('/api/rankings/top10', (req, res) => {
   res.json({
     batters: top10Batters,
@@ -274,7 +306,162 @@ app.get('/api/auction', (req, res) => {
   });
 });
 
-// 12. Methodology & Mathematical Proofs
+// 12. Clutch Performers Spotlight (Death overs, High RRR, Collapse recovery)
+app.get('/api/rankings/clutch', (req, res) => {
+  const allPlayers = Object.values(playersMaster);
+
+  // 1. Death Overs Specialists (Overs 17-20)
+  const deathBatters = allPlayers
+    .filter(p => p.batting && p.batting.death_p_sr && p.batting.p_balls >= 60)
+    .sort((a, b) => (b.batting.death_p_sr || 0) - (a.batting.death_p_sr || 0))
+    .slice(0, 10);
+
+  const deathBowlers = allPlayers
+    .filter(p => p.bowling && p.bowling.death_p_econ && p.bowling.p_balls >= 60)
+    .sort((a, b) => (a.bowling.death_p_econ || 99) - (b.bowling.death_p_econ || 99))
+    .slice(0, 10);
+
+  // 2. Chase Closer Specialists (Innings 2 High Pressure)
+  const chaseClosers = allPlayers
+    .filter(p => p.batting && p.batting.chase_p_sr && p.batting.p_balls >= 60)
+    .sort((a, b) => (b.batting.chase_p_sr || 0) - (a.batting.chase_p_sr || 0))
+    .slice(0, 10);
+
+  // 3. Crisis Stabilizers (High average under pressure)
+  const crisisAnchors = allPlayers
+    .filter(p => p.batting && p.batting.p_avg >= 30.0 && p.batting.p_balls >= 60)
+    .sort((a, b) => (b.batting.p_avg || 0) - (a.batting.p_avg || 0))
+    .slice(0, 10);
+
+  res.json({
+    death_batters: deathBatters,
+    death_bowlers: deathBowlers,
+    chase_closers: chaseClosers,
+    crisis_anchors: crisisAnchors
+  });
+});
+
+// 13. AI Scouting Assistant Query Engine
+app.all(['/api/assistant/query', '/api/assistant'], (req, res) => {
+  const q = (req.query.q || (req.body && req.body.query) || '').toLowerCase().trim();
+  if (!q) {
+    return res.json({
+      answer: "Welcome to the Royal Scout AI Intelligence Assistant. Ask any question about player reliability, death overs, high-pressure chases, head-to-head comparisons, or IPL 2027 Rajasthan Royals auction targets.",
+      suggested_questions: [
+        "Who are the top death bowlers for Rajasthan Royals?",
+        "Compare Rinku Singh and David Miller in high-pressure chases",
+        "Why is Matheesha Pathirana recommended as RR's #1 pace priority?",
+        "Which mystery spinners maintain an economy under 7.0 in pressure situations?",
+        "What are Rajasthan Royals' 4 tactical auction priorities?"
+      ],
+      players: []
+    });
+  }
+
+  const allPlayers = Object.values(playersMaster);
+
+  // Check 1: Rajasthan Royals Strategy Query
+  if (q.includes('rr') || q.includes('rajasthan') || q.includes('priority') || q.includes('strategy') || q.includes('target')) {
+    return res.json({
+      query: q,
+      answer: "Rajasthan Royals' IPL 2027 strategy focuses on 4 critical pressure gaps identified across 2022–2026 match telemetry:\n\n" +
+              "1. Specialist Death Pacer: Matheesha Pathirana (BoPRI 73.4, 8.29 death economy, 44 pressure wkts) or Arshdeep Singh (74 pressure wkts).\n" +
+              "2. Mystery Spin Squeeze: Kuldeep Yadav (BoPRI 88.34, 6.51 pressure economy) to strangle middle overs.\n" +
+              "3. Clutch Chase Closer: Rinku Singh (934 pressure runs, 172.3 SR) or David Miller (+76.9 SR delta).\n" +
+              "4. Crisis Recovery Anchor: Shashank Singh (57.8 pressure average, 163.8 SR) to rescue early collapses.",
+      players: rrAuctionTargets.slice(0, 4)
+    });
+  }
+
+  // Check 2: Comparison Query
+  if (q.includes('compare') || q.includes(' vs ') || q.includes('versus')) {
+    const matched = allPlayers.filter(p => q.includes(p.player_name.toLowerCase()));
+    if (matched.length >= 2) {
+      const p1 = matched[0];
+      const p2 = matched[1];
+      const edge1 = (p1.overall_pri || 0) > (p2.overall_pri || 0) ? `${p1.player_name} leads in overall PRI (${p1.overall_pri} vs ${p2.overall_pri})` : `${p2.player_name} leads in overall PRI (${p2.overall_pri} vs ${p1.overall_pri})`;
+      return res.json({
+        query: q,
+        answer: `Direct Head-to-Head Comparison: ${p1.player_name} vs ${p2.player_name}.\n\n` +
+                `• PRI Score: ${p1.player_name} (${p1.overall_pri}) vs ${p2.player_name} (${p2.overall_pri}).\n` +
+                (p1.batting && p2.batting ? `• Strike Rate: ${p1.player_name} (${p1.batting.p_sr}) vs ${p2.player_name} (${p2.batting.p_sr}).\n• Clutch SR Delta: ${p1.player_name} (+${p1.batting.delta_sr}) vs ${p2.player_name} (+${p2.batting.delta_sr}).\n` : '') +
+                (p1.bowling && p2.bowling ? `• Pressure Economy: ${p1.player_name} (${p1.bowling.p_econ}) vs ${p2.player_name} (${p2.bowling.p_econ}).\n• Pressure Wickets: ${p1.player_name} (${p1.bowling.p_wkts}) vs ${p2.player_name} (${p2.bowling.p_wkts}).\n` : '') +
+                `• Verdict: ${edge1}.`,
+        players: [p1, p2]
+      });
+    }
+  }
+
+  // Check 3: Death Overs Query
+  if (q.includes('death') || q.includes('yorker') || q.includes('18-20')) {
+    const topDeathBowlers = allPlayers
+      .filter(p => p.bowling && p.bowling.death_p_econ && p.bowling.p_balls >= 60)
+      .sort((a, b) => a.bowling.death_p_econ - b.bowling.death_p_econ)
+      .slice(0, 3);
+
+    return res.json({
+      query: q,
+      answer: `The leading death-overs specialists in our database based on death economy and pressure volume are:\n\n` +
+              topDeathBowlers.map((b, i) => `${i+1}. ${b.player_name} (${b.bowling.death_p_econ} death econ, ${b.bowling.p_wkts} pressure wkts across ${b.bowling.p_balls} pressure deliveries)`).join('\n') +
+              "\n\nMatheesha Pathirana (8.29 death econ, 44 pressure wkts) and Arshdeep Singh (74 pressure wkts) represent Rajasthan Royals' premier pace options.",
+      players: topDeathBowlers
+    });
+  }
+
+  // Check 4: Finisher / Chasing Query
+  if (q.includes('finisher') || q.includes('chase') || q.includes('chasing') || q.includes('strike rate')) {
+    const topFinishers = allPlayers
+      .filter(p => p.batting && p.batting.p_balls >= 100 && p.batting.chase_p_sr >= 160)
+      .sort((a, b) => b.batting.p_sr - a.batting.p_sr)
+      .slice(0, 3);
+
+    return res.json({
+      query: q,
+      answer: `Top pressure finishers with exceptional strike rates and proven volume in high-RRR chases:\n\n` +
+              topFinishers.map((b, i) => `${i+1}. ${b.player_name} (${b.batting.p_sr} pressure SR, +${b.batting.delta_sr} SR delta, ${b.batting.p_runs} pressure runs)`).join('\n') +
+              "\n\nRinku Singh (+45.2 SR delta) and David Miller (+76.9 SR delta) are the standout match-winners under extreme chase conditions.",
+      players: topFinishers
+    });
+  }
+
+  // Check 5: Single Player Deep Query
+  const singleMatch = allPlayers.find(p => q.includes(p.player_name.toLowerCase()));
+  if (singleMatch) {
+    let details = `${singleMatch.player_name} (${singleMatch.primary_role}, ${singleMatch.country}):\n\n`;
+    details += `• Overall Pressure Reliability Index: ${singleMatch.overall_pri} / 100 (${singleMatch.sample_confidence} Confidence)\n`;
+    if (singleMatch.batting) {
+      details += `• Pressure Batting: ${singleMatch.batting.p_runs} runs @ ${singleMatch.batting.p_sr} SR (Normal: ${singleMatch.batting.norm_sr} SR | Delta: +${singleMatch.batting.delta_sr})\n`;
+      details += `• Pressure Average: ${singleMatch.batting.p_avg} | Boundary %: ${singleMatch.batting.p_bound_pct}%\n`;
+    }
+    if (singleMatch.bowling) {
+      details += `• Pressure Bowling: ${singleMatch.bowling.p_wkts} wkts @ ${singleMatch.bowling.p_econ} Econ (Normal: ${singleMatch.bowling.norm_econ} | Delta: ${singleMatch.bowling.delta_econ})\n`;
+      details += `• Dot Ball %: ${singleMatch.bowling.p_dot_pct}% | Death Overs Econ: ${singleMatch.bowling.death_p_econ}\n`;
+    }
+    if (singleMatch.rr_tactical_fit) {
+      details += `• RR Tactical Fit: ${singleMatch.rr_tactical_fit}\n`;
+    }
+    details += `• Scouting Verdict: ${singleMatch.key_strength || 'Proven match-winner with high tactical versatility.'}`;
+
+    return res.json({
+      query: q,
+      answer: details,
+      players: [singleMatch]
+    });
+  }
+
+  // Fallback: General keyword search
+  const matches = allPlayers
+    .filter(p => p.player_name.toLowerCase().includes(q) || (p.primary_role && p.primary_role.toLowerCase().includes(q)))
+    .slice(0, 3);
+
+  res.json({
+    query: q,
+    answer: `Found ${matches.length} matching players in the official dataset evaluated under pressure conditions.`,
+    players: matches
+  });
+});
+
+// 14. Methodology & Mathematical Proofs
 app.get('/api/methodology', (req, res) => {
   res.json({
     pressure_definition: {
@@ -306,12 +493,12 @@ app.get('/api/methodology', (req, res) => {
   });
 });
 
-// 13. Download Unstop CSV Rankings
+// 13. Download CSV Rankings
 app.get('/api/export/csv', (req, res) => {
-  const csvPath = path.join(DOCS_DIR, 'UNSTOP_SUBMISSION_RANKINGS.csv');
+  const csvPath = path.join(DOCS_DIR, 'ROYAL_SCOUT_PRESSURE_RANKINGS.csv');
   if (fs.existsSync(csvPath)) {
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename="UNSTOP_SUBMISSION_RANKINGS.csv"');
+    res.setHeader('Content-Disposition', 'attachment; filename="ROYAL_SCOUT_PRESSURE_RANKINGS.csv"');
     fs.createReadStream(csvPath).pipe(res);
   } else {
     res.status(404).json({ error: 'CSV file not found' });

@@ -1,9 +1,8 @@
-# ROYAL SCOUT AI — OFFICIAL ROUND 1 METHODOLOGY REPORT
+# ROYAL SCOUT AI — SCIENTIFIC METHODOLOGY REPORT
 
-**Hackathon Challenge:** SuperRR Selector 2.0 – Help Shape Rajasthan Royals  
-**Round 1:** Identify the Most Reliable Players Under Pressure  
+**Executive System:** Rajasthan Royals Decision-Support Intelligence Platform  
 **Target Objective:** Evaluate proprietary player-performance data pack (IPL & T20I 2022–2026), combine with verified public cricket intelligence, and identify the most reliable clutch performers Rajasthan Royals should back at the IPL 2027 auction.  
-**Submission Artifacts:** Official Top 10 Batters, Official Top 10 Bowlers, All-Rounders, Wicketkeepers, and Comprehensive Decision-Support Engine.  
+**Core Artifacts:** Pressure Reliability Index (PRI), Ranked Batters, Bowlers, All-Rounders, Wicketkeepers, and Comprehensive Auction Decision-Support Engine.  
 
 ---
 
@@ -108,9 +107,9 @@ $$\text{PRI} = w_{\text{sample}} \cdot \text{Raw\_Score} + (1 - w_{\text{sample}
 
 ---
 
-## 5. Official Round 1 Deliverable: Top 10 Batters Under Pressure
+## 5. Top 10 Batters Under Pressure (BPRI Rankings)
 
-The following ranked selections correspond directly to the dropdown fields on the Unstop portal:
+The following ranked selections represent the premier high-leverage batters identified across 200,999 tournament deliveries:
 
 | Rank | Player Name | BPRI | Pressure Balls | Pressure Runs | Pressure SR | Normal SR | Clutch Δ SR | Pressure Avg | Confidence |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -134,9 +133,9 @@ The following ranked selections correspond directly to the dropdown fields on th
 
 ---
 
-## 6. Official Round 1 Deliverable: Top 10 Bowlers Under Pressure
+## 6. Top 10 Bowlers Under Pressure (BoPRI Rankings)
 
-The following ranked selections correspond directly to the dropdown fields on the Unstop portal:
+The following ranked selections represent the premier high-leverage bowlers identified across 200,999 tournament deliveries:
 
 | Rank | Player Name | BoPRI | Pressure Balls | Pressure Wkts | Pressure Econ | Normal Econ | Clutch Δ Econ | Pressure Avg | Confidence |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -216,11 +215,11 @@ Rajasthan Royals enter the IPL 2027 auction with a world-class core already in p
 1. **Defensible Methodology:** No opaque black-box machine learning was claimed. The scoring system is transparent, grounded in leverage theory, and easily reproduced.
 2. **Bayesian Sample Control:** Every player's score incorporates sample shrinkage, ensuring high credibility.
 3. **Data Integrity:** Strict adherence to official cricket scoring rules (wides/no-balls charged to bowler; byes/leg-byes excluded from bowler economy).
-4. **Reproducibility:** Re-executing `pipeline/run_pipeline.py` regenerates all JSON artifacts, SQLite database tables, and the official Unstop CSV submission deterministically.
+4. **Reproducibility:** Re-executing `pipeline/run_pipeline.py` regenerates all JSON artifacts, SQLite database tables, and the official CSV rankings deterministically.
 
 ---
 
-**Submitted by:** ROYAL SCOUT AI Engineering & Cricket Analytics Group  
-**Target Event:** SuperRR Selector Season 2 • Rajasthan Royals Round 1 Official Build  
+**Developed by:** ROYAL SCOUT AI Engineering & Cricket Analytics Group  
+**Target Organization:** Rajasthan Royals Cricket Operations & Auction Strategy Staff  
 **Repository & App:** Hosted on Node.js / React / SQLite Architecture
 

@@ -4,7 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-navy-900 text-slate-100 font-sans tracking-tight;
+    @apply bg-slate-50 text-slate-900 font-sans tracking-tight antialiased selection:bg-royal-pink selection:text-white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    @apply bg-navy-950 text-slate-100;
     background-image: 
       radial-gradient(circle at 15% 15%, rgba(29, 78, 216, 0.08) 0%, transparent 40%),
       radial-gradient(circle at 85% 85%, rgba(234, 26, 127, 0.06) 0%, transparent 40%),
@@ -15,35 +20,56 @@
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #070B19;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #1E293B;
+}
+
 ::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
 
 /* Glassmorphism utility */
 .royal-glass {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-color: rgba(226, 232, 240, 0.8);
+}
+
+.dark .royal-glass {
+  background: rgba(11, 18, 38, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .royal-glass-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(11, 18, 38, 0.95) 100%);
-  backdrop-filter: blur(16px);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+.dark .royal-glass-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(11, 18, 38, 0.95) 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .royal-card-hover {
@@ -51,16 +77,16 @@
 }
 
 .royal-card-hover:hover {
-  transform: translateY(-3px);
-  border-color: rgba(234, 26, 127, 0.35);
-  box-shadow: 0 10px 30px -10px rgba(234, 26, 127, 0.2);
+  transform: translateY(-2px);
+  border-color: rgba(234, 26, 127, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(234, 26, 127, 0.15);
 }
 
 /* Gold border glow */
 .gold-card-hover:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: rgba(226, 183, 20, 0.4);
-  box-shadow: 0 10px 30px -10px rgba(226, 183, 20, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(226, 183, 20, 0.15);
 }
 
 /* Number display tabular */
@@ -71,36 +97,24 @@
 /* Print and PDF Export Styles */
 @media print {
   @page {
-    size: landscape;
+    size: portrait;
     margin: 12mm 15mm 12mm 15mm;
   }
   
   html, body {
-    background: #070B19 !important;
-    color: #F8FAFC !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  header, nav, .print\\:hidden {
+  header, nav, footer, .print\\:hidden {
     display: none !important;
   }
 
-  .print-slide {
+  .print-page {
     page-break-after: always !important;
     break-after: page !important;
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 24px;
-    background: #0B1226 !important;
-    border: 1px solid #1E293B !important;
-    border-radius: 16px;
-    margin-bottom: 24px;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    padding: 20px 0;
   }
 }
-
-

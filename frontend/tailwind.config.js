@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -15,6 +16,12 @@ export default {
           750: '#15213D',
           700: '#1E293B',
           600: '#334155',
+        },
+        surface: {
+          light: '#F8FAFC',
+          card: '#FFFFFF',
+          border: '#E2E8F0',
+          muted: '#F1F5F9',
         },
         royal: {
           pink: '#EA1A7F',
@@ -36,6 +43,7 @@ export default {
         'royal-glow': '0 0 25px -5px rgba(234, 26, 127, 0.3)',
         'gold-glow': '0 0 25px -5px rgba(226, 183, 20, 0.25)',
         'blue-glow': '0 0 25px -5px rgba(29, 78, 216, 0.3)',
+        'card-light': '0 4px 20px -2px rgba(15, 23, 42, 0.06)',
       }
     },
   },

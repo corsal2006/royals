@@ -15,7 +15,7 @@
 | File Integrity: overview_stats.json | **PASSED** |
 | File Integrity: royal_scout.db | **PASSED** |
 | SQLite Top 10 Tables | **PASSED** |
-| Unstop CSV Format & Ranks | **PASSED** |
+| Export CSV Format & Ranks | **PASSED** |
 | API Endpoint /api/health | **PASSED** |
 | API Endpoint /api/overview | **PASSED** |
 | API Endpoint /api/rankings/top10 | **PASSED** |
@@ -28,6 +28,8 @@
 | API Endpoint /api/compare?ids=1699,813,6281 | **PASSED** |
 | API Endpoint /api/auction | **PASSED** |
 | API Endpoint /api/methodology | **PASSED** |
+| API Endpoint /api/images | **PASSED** |
+| API Endpoint /api/rankings/clutch | **PASSED** |
 | API Endpoint /api/export/csv | **PASSED** |
 
 ## Verification Summary

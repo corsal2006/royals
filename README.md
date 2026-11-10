@@ -1,60 +1,89 @@
 # 👑 ROYAL SCOUT AI
+### IPL Player Intelligence & Auction Analytics Platform
+*Official Decision-Support Intelligence for Rajasthan Royals Ahead of the IPL 2027 Auction*
 
-**Official Round 1 Submission for SuperRR Selector Season 2 — Help Shape Rajasthan Royals**  
-*Identifying the Most Reliable Players Under Pressure for the IPL 2027 Auction*
-
-![Royals Banner](https://img.shields.io/badge/SuperRR-Selector%202.0-EA1A7F?style=for-the-badge&logo=shield)
-![Status](https://img.shields.io/badge/Status-Complete%20%26%20Defensible-06B6D4?style=for-the-badge)
-![Coverage](https://img.shields.io/badge/Deliveries-200%2C999-E2B714?style=for-the-badge)
-![Matches](https://img.shields.io/badge/Matches-883-1D4ED8?style=for-the-badge)
+![Royals Brand](https://img.shields.io/badge/Rajasthan_Royals-Official_Scouting_Intelligence-EA1A7F?style=for-the-badge&logo=shield)
+![Platform Status](https://img.shields.io/badge/System-Production_Ready-06B6D4?style=for-the-badge)
+![Deliveries](https://img.shields.io/badge/Deliveries_Analyzed-200%2C999-E2B714?style=for-the-badge)
+![Matches](https://img.shields.io/badge/Matches_Processed-883-1D4ED8?style=for-the-badge)
 
 ---
 
 ## 📌 Executive Overview
 
-In T20 cricket, career aggregates and vanity statistics fail to distinguish players who elevate their game when the contest is on the line from those who wither under scrutiny. 
+In franchise T20 cricket, career aggregates and vanity statistics fail to distinguish players who elevate their game when the contest is on the line from those who falter under scrutiny.
 
-**ROYAL SCOUT AI** is a decision-support and cricket intelligence platform that analyzes **200,999 delivery-level records** across **883 matches** (IPL & T20Is from 2022 to 2026). The platform reconstructs the exact match context before every ball, measures how players perform in high-leverage situations relative to baseline conditions, applies **Bayesian sample-size shrinkage**, and delivers defensible player rankings and auction recommendations for **Rajasthan Royals** at the IPL 2027 auction.
-
----
-
-## 🏆 Official Unstop Submission: Round 1 Player Rankings
-
-These rankings match the dropdown fields on the Unstop submission portal and are fully documented with delivery-level evidence in the application.
-
-### 🏏 Top 10 Batters Under Pressure (Unstop Dropdowns)
-
-| Unstop Rank | Player Name | BPRI Score | Pressure Balls | Pressure Runs | Pressure SR | Normal SR | Clutch Δ SR | Pressure Avg | Confidence |
-| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Rank 1** | **Naman Dhir** | **81.95** | 184 | 371 | 201.6 | 144.0 | **+57.7** | 37.1 | MEDIUM |
-| **Rank 2** | **Suryakumar Yadav** | **77.89** | 227 | 460 | 202.6 | 157.9 | **+44.7** | 28.8 | HIGH |
-| **Rank 3** | **David Miller** | **74.62** | 307 | 584 | 190.2 | 113.3 | **+76.9** | 27.8 | HIGH |
-| **Rank 4** | **Rinku Singh** | **73.16** | 542 | 934 | 172.3 | 123.4 | **+48.9** | 34.6 | HIGH |
-| **Rank 5** | **Shashank Singh** | **71.04** | 282 | 462 | 163.8 | 135.2 | **+28.6** | 57.8 | HIGH |
-| **Rank 6** | **Tristan Stubbs** | **70.05** | 307 | 540 | 175.9 | 114.6 | **+61.3** | 28.2 | HIGH |
-| **Rank 7** | **Marcus Stoinis** | **70.00** | 281 | 505 | 179.7 | 136.3 | **+43.4** | 26.6 | HIGH |
-| **Rank 8** | **Matthew Wade** | **69.44** | 173 | 286 | 165.3 | 108.5 | **+56.8** | 40.9 | MEDIUM |
-| **Rank 9** | **Tim David** | **68.30** | 513 | 901 | 175.6 | 163.6 | **+12.0** | 39.2 | HIGH |
-| **Rank 10** | **Donovan Ferreira**| **66.59** | 168 | 301 | 179.2 | 143.1 | **+36.1** | 30.1 | MEDIUM |
+**ROYAL SCOUT AI** is an advanced cricket intelligence and auction decision-support system built for the Rajasthan Royals management, coaches, and analytics staff. Analyzing **200,999 delivery-level records** across **883 matches** (IPL and T20Is from 2022 to 2026), the platform reconstructs the exact match context before every ball, measures how players perform in high-leverage situations relative to baseline conditions, applies **Bayesian sample-size shrinkage**, and delivers evidence-backed player intelligence for the **IPL 2027 auction**.
 
 ---
 
-### 🎯 Top 10 Bowlers Under Pressure (Unstop Dropdowns)
+## 🎯 Core Product Capabilities
 
-| Unstop Rank | Player Name | BoPRI Score | Pressure Balls | Pressure Wkts | Pressure Econ | Normal Econ | Clutch Δ Econ | Pressure Avg | Confidence |
+1. **Dual-Theme Design System (Light & Dark Modes):**
+   - **Dark Mode:** Deep navy (`#070B19`), charcoal surfaces, white primary typography, soft royal blue accents, and restrained Rajasthan Royals pink/gold highlights.
+   - **Light Mode:** Clean crisp off-white background (`#F8FAFC`), pure white cards (`#FFFFFF`), high-contrast dark navy typography (`#0F172A`), soft borders, and optimized sports editorial contrast.
+   - Smooth transitions, header toggle, `localStorage` persistence, and automatic system preference detection.
+
+2. **Verified Player Photograph Engine:**
+   - Centralized `PlayerImage.jsx` component mapped to verified public action headshots from official IPL and cricket registries cached in `backend/data/player_images.json`.
+   - Elegant fallback to custom-crafted SVG jersey avatars with player initials, role badges, and verified indicators. Zero broken images, zero face-guessing.
+
+3. **10 Main Navigation Views:**
+   - **Overview Dashboard:** Executive KPIs, top pressure performers, live delivery pressure simulator, and auction highlights.
+   - **Players Directory:** Complete searchable database of 811 players with role filter tabs, sorting, view toggle (Modern Cards vs Detailed Table), and pagination.
+   - **Batters Intelligence:** Filterable scatter plot (Normal SR vs Pressure SR), phase breakdowns, boundary avoidance, and BPRI leaderboards.
+   - **Bowlers Intelligence:** Scatter plot (Normal Economy vs Pressure Economy), pace/spin splits, death-overs containment, and BoPRI rankings.
+   - **All-Rounders Intelligence:** Dual-threat quadrant matrix (BPRI vs BoPRI) and harmonic mean (ARPRI) rankings.
+   - **Fielders & Wicketkeepers:** Verified wicketkeeper leaderboard and tournament dismissal involvement analytics.
+   - **Clutch Performers Spotlight:** Tactical deep-dives into Death Overs Specialists, Chase Closers, and Crisis Anchors.
+   - **Head-to-Head Comparison:** 5-axis interactive radar chart, head-to-head metric differentials, and situational breakdown.
+   - **Auction Intelligence Hub:** Interactive IPL 2027 purse simulator, budget allocation tracker, projected clutch lift, and target priority blueprints.
+   - **Scientific Methodology:** Transparent mathematical formulations, sigmoid models, Bayesian shrinkage equations, and data dictionary.
+
+4. **Interactive AI Scouting Assistant:**
+   - Natural language cricket query console grounded strictly in delivery-level tournament analytics.
+   - Suggested query chips, actionable answers, and clickable player dossier cards.
+
+5. **Professional Print & PDF Dossier Export:**
+   - Dedicated print stylesheets allowing scouts and decision-makers to export individual player dossiers and auction blueprints with clean pagination and background printing.
+
+---
+
+## 🏆 Top Pressure Performers
+
+### 🏏 Top Batters Under Pressure (BPRI)
+
+| Rank | Player Name | BPRI Score | Pressure Balls | Pressure Runs | Pressure SR | Normal SR | Clutch Δ SR | Pressure Avg | Confidence |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Rank 1** | **Kuldeep Yadav** | **88.34** | 350 | 36 | 6.51 | 8.29 | **+1.78** | 10.55 | HIGH |
-| **Rank 2** | **Abrar Ahmed** | **80.96** | 210 | 15 | 4.80 | 7.43 | **+2.63** | 11.20 | HIGH |
-| **Rank 3** | **Sufiyan Muqeem** | **80.03** | 134 | 15 | 5.60 | 6.06 | **+0.46** | 8.33 | MEDIUM |
-| **Rank 4** | **Varun Chakravarthy**| **78.94** | 414 | 32 | 6.77 | 8.32 | **+1.55** | 14.59 | HIGH |
-| **Rank 5** | **Shadab Khan** | **77.20** | 113 | 10 | 5.79 | 8.42 | **+2.63** | 10.90 | MEDIUM |
-| **Rank 6** | **Mohammad Nawaz** | **75.44** | 162 | 11 | 5.63 | 7.68 | **+2.05** | 13.82 | MEDIUM |
-| **Rank 7** | **Matheesha Pathirana**| **73.40** | 400 | 44 | 8.29 | 8.59 | **+0.30** | 12.57 | HIGH |
-| **Rank 8** | **Akeal Hosein** | **73.12** | 132 | 8 | 4.95 | 8.10 | **+3.15** | 13.63 | MEDIUM |
-| **Rank 9** | **Maheesh Theekshana**| **72.81** | 311 | 24 | 6.95 | 7.69 | **+0.74** | 15.00 | HIGH |
-| **Rank 10** | **Noor Ahmad** | **72.59** | 236 | 20 | 7.22 | 7.87 | **+0.65** | 14.20 | HIGH |
+| **1** | **Naman Dhir** | **81.95** | 184 | 371 | 201.6 | 144.0 | **+57.7** | 37.1 | MEDIUM |
+| **2** | **Suryakumar Yadav** | **77.89** | 227 | 460 | 202.6 | 157.9 | **+44.7** | 28.8 | HIGH |
+| **3** | **David Miller** | **74.62** | 307 | 584 | 190.2 | 113.3 | **+76.9** | 27.8 | HIGH |
+| **4** | **Rinku Singh** | **73.16** | 542 | 934 | 172.3 | 123.4 | **+48.9** | 34.6 | HIGH |
+| **5** | **Shashank Singh** | **71.04** | 282 | 462 | 163.8 | 135.2 | **+28.6** | 57.8 | HIGH |
+| **6** | **Tristan Stubbs** | **70.05** | 307 | 540 | 175.9 | 114.6 | **+61.3** | 28.2 | HIGH |
+| **7** | **Marcus Stoinis** | **70.00** | 281 | 505 | 179.7 | 136.3 | **+43.4** | 26.6 | HIGH |
+| **8** | **Matthew Wade** | **69.44** | 173 | 286 | 165.3 | 108.5 | **+56.8** | 40.9 | MEDIUM |
+| **9** | **Tim David** | **68.30** | 513 | 901 | 175.6 | 163.6 | **+12.0** | 39.2 | HIGH |
+| **10** | **Donovan Ferreira**| **66.59** | 168 | 301 | 179.2 | 143.1 | **+36.1** | 30.1 | MEDIUM |
 
-*(Notable Pace Specialists: Arshdeep Singh - 74 pressure wickets in 775 balls; Jasprit Bumrah - 7.37 pressure economy across 459 balls).*
+---
+
+### 🎯 Top Bowlers Under Pressure (BoPRI)
+
+| Rank | Player Name | BoPRI Score | Pressure Balls | Pressure Wkts | Pressure Econ | Normal Econ | Clutch Δ Econ | Pressure Avg | Confidence |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **Kuldeep Yadav** | **88.34** | 350 | 36 | 6.51 | 8.29 | **+1.78** | 10.55 | HIGH |
+| **2** | **Abrar Ahmed** | **80.96** | 210 | 15 | 4.80 | 7.43 | **+2.63** | 11.20 | HIGH |
+| **3** | **Sufiyan Muqeem** | **80.03** | 134 | 15 | 5.60 | 6.06 | **+0.46** | 8.33 | MEDIUM |
+| **4** | **Varun Chakravarthy**| **78.94** | 414 | 32 | 6.77 | 8.32 | **+1.55** | 14.59 | HIGH |
+| **5** | **Shadab Khan** | **77.20** | 113 | 10 | 5.79 | 8.42 | **+2.63** | 10.90 | MEDIUM |
+| **6** | **Mohammad Nawaz** | **75.44** | 162 | 11 | 5.63 | 7.68 | **+2.05** | 13.82 | MEDIUM |
+| **7** | **Matheesha Pathirana**| **73.40** | 400 | 44 | 8.29 | 8.59 | **+0.30** | 12.57 | HIGH |
+| **8** | **Akeal Hosein** | **73.12** | 132 | 8 | 4.95 | 8.10 | **+3.15** | 13.63 | MEDIUM |
+| **9** | **Maheesh Theekshana**| **72.81** | 311 | 24 | 6.95 | 7.69 | **+0.74** | 15.00 | HIGH |
+| **10** | **Noor Ahmad** | **72.59** | 236 | 20 | 7.22 | 7.87 | **+0.65** | 14.20 | HIGH |
+
+*(Pace Specialists of Note: Arshdeep Singh - 74 pressure wickets in 775 balls; Jasprit Bumrah - 7.37 pressure economy across 459 balls).*
 
 ---
 
@@ -90,7 +119,7 @@ $$\text{PRI} = w_{\text{sample}} \cdot \text{Raw\_Score} + (1 - w_{\text{sample}
 Rajasthan Royals possess an elite core: **Sanju Samson (C/WK)**, **Yashasvi Jaiswal**, **Riyan Parag**, **Dhruv Jurel**, and **Shimron Hetmyer**. 
 
 Clutch analysis identifies the 4 essential acquisitions for IPL 2027:
-1. **Death Overs Spearmhead:** **Matheesha Pathirana** (8.29 death econ, dipping sling yorkers) or **Arshdeep Singh** (74 pressure wickets).
+1. **Death Overs Spearhead:** **Matheesha Pathirana** (8.29 death econ, dipping sling yorkers) or **Arshdeep Singh** (74 pressure wickets).
 2. **Lead Mystery / Wrist Spinner:** **Kuldeep Yadav** (#1 BoPRI 88.34, 6.51 economy) or **Varun Chakravarthy** (6.77 economy).
 3. **Ice-Cold Finisher at #6:** **Rinku Singh** (934 pressure runs @ 172.3 SR) or **David Miller** (+76.9 SR elevation).
 4. **Crisis Recovery Anchor:** **Shashank Singh** (57.8 pressure average @ 163.8 SR).
@@ -103,6 +132,7 @@ Clutch analysis identifies the 4 essential acquisitions for IPL 2027:
 - **Backend API:** Node.js, Express, CORS
 - **Analytics Engine:** Python 3.10, Pandas, NumPy, Scikit-learn
 - **Persistence:** SQLite Database (`royal_scout.db`), Precomputed High-Speed JSON
+- **Asset Pipeline:** Verified Wikimedia Commons & official cricket registries with SVG fallback
 
 ---
 
@@ -125,12 +155,13 @@ node server.js
 ```
 The full application will be live at `http://localhost:5000`.
 
-### 3. Start Frontend Development Server (Optional for Live Editing)
+### 3. Start Frontend Development Server (Live Hot-Reloading)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+Available at `http://localhost:3000`.
 
 ---
 
@@ -149,14 +180,14 @@ c:\Users\megha\royals\
 │   └── data\                  # Precomputed JSON & SQLite Database (royal_scout.db)
 ├── frontend\                  # Vite + React User Interface
 │   ├── src\
-│   │   ├── components\        # Navbar, SituationSimulator, PlayerModal
-│   │   ├── pages\             # Overview, Rankings, Batters, Bowlers, Comparison, Auction, etc.
+│   │   ├── components\        # Navbar, PlayerImage, ScoutingAssistant, SituationSimulator, PlayerModal
+│   │   ├── pages\             # Overview, Players, Batters, Bowlers, AllRounders, Fielders, Clutch, Comparison, Auction, Methodology
 │   │   └── services\api.js    # API Client
-├── docs\                      # Official Submission Documentation
-│   ├── DATA_DICTIONARY.md     # Full schema and data dictionary
-│   ├── METHODOLOGY_REPORT.md  # Official Round 1 Methodology Report
+├── docs\                      # Architecture & Analytical Documentation
+│   ├── DATA_DICTIONARY.md     # Full schema and metric dictionary
+│   ├── METHODOLOGY_REPORT.md  # Scientific Pressure Reliability Index report
 │   ├── RR_AUCTION_STRATEGY.md # Rajasthan Royals Tactical Auction Strategy
-│   └── UNSTOP_SUBMISSION_RANKINGS.csv # Unstop Dropdown Ready CSV
+│   └── ROYAL_SCOUT_PRESSURE_RANKINGS.csv # Exportable Rankings CSV
 ├── requirements.txt           # Python dependencies
 ├── .env.example               # Environment variables
 └── README.md                  # System Documentation
@@ -164,6 +195,5 @@ c:\Users\megha\royals\
 
 ---
 
-**Developed for:** SuperRR Selector Season 2 • Round 1 Hackathon Submission  
-**Theme:** Royal Navy (`#070B19`) • Royals Pink (`#EA1A7F`) • Royal Gold (`#E2B714`)
-
+**Product:** ROYAL SCOUT AI  
+**Brand Identity:** Royal Navy (`#070B19`) • Royals Pink (`#EA1A7F`) • Royal Gold (`#E2B714`) • Off-White Light (`#F8FAFC`)
