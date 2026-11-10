@@ -289,12 +289,12 @@ def build_standalone_html():
       </div>
     </div>
 
-    <!-- Official Unstop Submission Top 10 Batters -->
+    <!-- Official Pressure Rankings Top 10 Batters -->
     <div class="section">
-      <span class="badge badge-pink">Unstop Form Submission • Batters Dropdown</span>
+      <span class="badge badge-pink">Official Scouting Rankings • Batters</span>
       <h2>Top 10 Batters Under Pressure (Ranks 1 to 10)</h2>
       <p class="section-desc">
-        Ranks 1 to 10 selected from the official Unstop submission dropdown. Ranked by Batting Pressure Reliability Index (BPRI).
+        Elite batters ranked by Batting Pressure Reliability Index (BPRI), evaluated across high-leverage deliveries.
       </p>
 
       <table>
@@ -346,12 +346,12 @@ def build_standalone_html():
       </table>
     </div>
 
-    <!-- Official Unstop Submission Top 10 Bowlers -->
+    <!-- Official Pressure Rankings Top 10 Bowlers -->
     <div class="section">
-      <span class="badge badge-gold">Unstop Form Submission • Bowlers Dropdown</span>
+      <span class="badge badge-gold">Official Scouting Rankings • Bowlers</span>
       <h2>Top 10 Bowlers Under Pressure (Ranks 1 to 10)</h2>
       <p class="section-desc">
-        Ranks 1 to 10 selected from the official Unstop submission dropdown. Ranked by Bowling Pressure Reliability Index (BoPRI).
+        Elite bowlers ranked by Bowling Pressure Reliability Index (BoPRI), evaluated across high-leverage deliveries.
       </p>
 
       <table>
@@ -483,8 +483,8 @@ def build_standalone_html():
 
     <!-- Footer -->
     <div style="text-align: center; padding: 24px; color: var(--slate-500); font-size: 12px;">
-      ROYAL SCOUT AI • SuperRR Selector 2.0 • Official Hackathon Submission for Rajasthan Royals<br/>
-      Reproducible Python Pipeline • Verified 2022–2026 IPL & T20I Dataset
+      ROYAL SCOUT AI • Rajasthan Royals IPL 2027 Player Intelligence & Auction Decision Support<br/>
+      Reproducible Python Pipeline • Grounded in 2022–2026 Match Telemetry
     </div>
 
   </div>

@@ -20,7 +20,7 @@ import {
   FileText
 } from 'lucide-react';
 import PlayerImage from './PlayerImage';
-import { fetchPlayers } from '../services/api';
+import { fetchPlayers, API_BASE } from '../services/api';
 
 export default function Navbar({ activeTab, setActiveTab, onSelectPlayer, theme, setTheme }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -187,7 +187,7 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer, theme,
 
             {/* Export CSV Download */}
             <a
-              href="/api/export/csv"
+              href={`${API_BASE}/export/csv`}
               download="RR_AUCTION_SCOUTING_RANKINGS.csv"
               className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-navy-800 hover:bg-slate-200 dark:hover:bg-navy-750 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-navy-700 transition-all shadow-sm"
               title="Download verified player scouting rankings CSV"

@@ -15,30 +15,59 @@ import {
 } from 'lucide-react';
 import PlayerImage from '../components/PlayerImage';
 import FifaPlayerCard from '../components/FifaPlayerCard';
+import { fetchClutchRankings } from '../services/api';
 
 export default function ClutchPage({ onSelectPlayer }) {
   const [clutchData, setClutchData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('death_bowlers'); // death_bowlers, death_batters, chase_closers, crisis_anchors
   const [viewMode, setViewMode] = useState('fifa'); // 'fifa' | 'compact'
 
-  useEffect(() => {
-    fetch('/api/rankings/clutch')
-      .then(res => res.json())
+  const loadData = () => {
+    setLoading(true);
+    setError(null);
+    fetchClutchRankings()
       .then(data => {
         setClutchData(data);
         setLoading(false);
       })
       .catch(err => {
         console.error("Error fetching clutch rankings:", err);
+        setError(err.message || "Failed to connect to the pressure analytics engine.");
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
-  if (loading || !clutchData) {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-royal-pink"></div>
+        <span className="text-xs font-semibold text-slate-500 animate-pulse">Loading Clutch Telemetry...</span>
+      </div>
+    );
+  }
+
+  if (error || !clutchData) {
+    return (
+      <div className="royal-glass-card rounded-3xl p-8 sm:p-12 border border-slate-200 dark:border-navy-700 text-center max-w-lg mx-auto my-12 space-y-4">
+        <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mx-auto">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+        <h3 className="text-xl font-display font-black text-slate-900 dark:text-white">Unable to Load Clutch Spotlight</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          {error || "Could not retrieve situational clutch performers from the server."}
+        </p>
+        <button
+          onClick={loadData}
+          className="px-6 py-2 rounded-xl text-xs font-bold bg-royal-pink text-white shadow-royal-glow hover:bg-royal-pink-hover transition-all"
+        >
+          Retry Connection
+        </button>
       </div>
     );
   }

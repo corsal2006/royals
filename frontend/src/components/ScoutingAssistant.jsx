@@ -14,6 +14,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import PlayerImage from './PlayerImage';
+import { queryAssistant } from '../services/api';
 
 const SUGGESTIONS = [
   "Top 3 death bowlers for RR",
@@ -58,8 +59,7 @@ export default function ScoutingAssistant({ onSelectPlayer }) {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/assistant/query?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
+      const data = await queryAssistant(q);
       
       setMessages(prev => [
         ...prev,

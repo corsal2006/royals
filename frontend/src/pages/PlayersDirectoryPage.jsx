@@ -21,6 +21,7 @@ import { fetchPlayers } from '../services/api';
 export default function PlayersDirectoryPage({ onSelectPlayer }) {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
   const [sortBy, setSortBy] = useState('pri'); // pri, name, runs, wkts
@@ -28,8 +29,9 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
-  useEffect(() => {
+  const loadData = () => {
     setLoading(true);
+    setError(null);
     fetchPlayers({ q: search, role: roleFilter, limit: 300 })
       .then(res => {
         let list = res.players || [];
@@ -47,9 +49,14 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        console.error("Error loading players:", err);
+        setError(err.message || "Failed to load players directory");
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadData();
   }, [search, roleFilter, sortBy]);
 
   // Pagination slice
@@ -157,8 +164,20 @@ export default function PlayersDirectoryPage({ onSelectPlayer }) {
 
       {/* Main Content Area */}
       {loading ? (
-        <div className="flex items-center justify-center min-h-[40vh]">
+        <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-royal-pink"></div>
+          <span className="text-xs font-semibold text-slate-500 animate-pulse">Retrieving Player Telemetry...</span>
+        </div>
+      ) : error ? (
+        <div className="p-12 text-center rounded-3xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 space-y-4 max-w-lg mx-auto">
+          <p className="text-rose-500 font-bold text-sm">⚠️ {error}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">Please verify network connectivity to the analytics API.</p>
+          <button 
+            onClick={loadData}
+            className="px-5 py-2.5 rounded-xl text-xs font-bold bg-royal-pink text-white shadow-royal-glow"
+          >
+            Retry Connection
+          </button>
         </div>
       ) : players.length === 0 ? (
         <div className="p-12 text-center rounded-2xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 space-y-3">

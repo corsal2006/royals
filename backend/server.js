@@ -6,8 +6,58 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Production CORS Configuration: Allows deployed frontend & preview deployments
+const allowedOrigins = [
+  'https://royals-taupe.vercel.app',
+  'https://royals-18de.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5000'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+}));
+app.options('*', cors());
 app.use(express.json());
+
+// Root API Status Endpoint
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    system: 'ROYAL SCOUT AI — IPL Player Intelligence & Auction Decision Support',
+    version: '1.0.0',
+    documentation: '/api/health',
+    endpoints: {
+      health: '/api/health',
+      overview: '/api/overview',
+      dashboard: '/api/dashboard',
+      top10: '/api/rankings/top10',
+      batters: '/api/rankings/batters',
+      bowlers: '/api/rankings/bowlers',
+      all_rounders: '/api/rankings/all-rounders',
+      fielders: '/api/rankings/fielders',
+      clutch: '/api/rankings/clutch',
+      players: '/api/players',
+      player_details: '/api/player/:id',
+      compare: '/api/compare?ids=1699,813',
+      auction: '/api/auction',
+      auction_intelligence: '/api/auction-intelligence',
+      methodology: '/api/methodology',
+      csv: '/api/export/csv'
+    }
+  });
+});
 
 // Load precomputed datasets into memory for sub-millisecond API response times
 const DATA_DIR = path.join(__dirname, 'data');
@@ -102,8 +152,8 @@ app.get('/api/images', (req, res) => {
   res.json(playerImages);
 });
 
-// 2. Executive Overview Stats
-app.get('/api/overview', (req, res) => {
+// 2. Executive Overview Stats / Dashboard
+app.get(['/api/overview', '/api/dashboard'], (req, res) => {
   res.json({
     stats: overviewStats,
     top10_batters: top10Batters,
@@ -120,8 +170,8 @@ app.get('/api/rankings/top10', (req, res) => {
   });
 });
 
-// 4. Batters Rankings (with filtering & sorting)
-app.get('/api/rankings/batters', (req, res) => {
+// 4. Batters Rankings / Category (with filtering & sorting)
+app.get(['/api/rankings/batters', '/api/categories/batters'], (req, res) => {
   const minBalls = parseInt(req.query.min_balls) || 60;
   const country = req.query.country || 'ALL';
   const search = (req.query.search || '').toLowerCase();
@@ -160,8 +210,8 @@ app.get('/api/rankings/batters', (req, res) => {
   });
 });
 
-// 5. Bowlers Rankings (with filtering & sorting)
-app.get('/api/rankings/bowlers', (req, res) => {
+// 5. Bowlers Rankings / Category (with filtering & sorting)
+app.get(['/api/rankings/bowlers', '/api/categories/bowlers'], (req, res) => {
   const minBalls = parseInt(req.query.min_balls) || 60;
   const country = req.query.country || 'ALL';
   const paceOrSpin = req.query.type || 'ALL'; // Pace, Spin
@@ -205,8 +255,8 @@ app.get('/api/rankings/bowlers', (req, res) => {
   });
 });
 
-// 6. All-Rounders Rankings
-app.get('/api/rankings/all-rounders', (req, res) => {
+// 6. All-Rounders Rankings / Category
+app.get(['/api/rankings/all-rounders', '/api/categories/all-rounders'], (req, res) => {
   const list = Object.values(playersMaster)
     .filter(p => p.arpri && p.arpri > 0)
     .sort((a, b) => (b.arpri || 0) - (a.arpri || 0));
@@ -217,8 +267,8 @@ app.get('/api/rankings/all-rounders', (req, res) => {
   });
 });
 
-// 7. Fielders & Wicketkeepers
-app.get('/api/rankings/fielders', (req, res) => {
+// 7. Fielders & Wicketkeepers / Category
+app.get(['/api/rankings/fielders', '/api/categories/fielders'], (req, res) => {
   const wks = Object.values(playersMaster)
     .filter(p => p.is_wk)
     .sort((a, b) => (b.overall_pri || 0) - (a.overall_pri || 0));
@@ -258,8 +308,8 @@ app.get('/api/players', (req, res) => {
   });
 });
 
-// 9. Single Player Deep Profile
-app.get('/api/player/:id', (req, res) => {
+// 9. Single Player Deep Profile / Details
+app.get(['/api/player/:id', '/api/player-details/:id'], (req, res) => {
   const pid = parseInt(req.params.id);
   const player = playersMaster[pid];
 
@@ -292,7 +342,7 @@ app.get('/api/compare', (req, res) => {
 });
 
 // 11. Rajasthan Royals Auction Intelligence Hub
-app.get('/api/auction', (req, res) => {
+app.get(['/api/auction', '/api/auction-intelligence'], (req, res) => {
   res.json({
     franchise: 'Rajasthan Royals',
     target_event: 'IPL 2027 Auction',
@@ -531,10 +581,20 @@ app.get('/api/export/csv', (req, res) => {
   if (fs.existsSync(csvPath)) {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename="ROYAL_SCOUT_PRESSURE_RANKINGS.csv"');
-    fs.createReadStream(csvPath).pipe(res);
-  } else {
-    res.status(404).json({ error: 'CSV file not found' });
+    return fs.createReadStream(csvPath).pipe(res);
   }
+
+  // Dynamic in-memory fallback for serverless deployments
+  const rows = ["Category,Rank,Player_ID,Player_Name,Pressure_Reliability_Index,Pressure_Balls,Pressure_Runs,Pressure_SR,Normal_SR,Clutch_Delta_SR,Pressure_Avg,Sample_Confidence,Pressure_Wickets,Pressure_Economy,Normal_Economy,Clutch_Delta_Economy"];
+  top10Batters.forEach(b => {
+    rows.push(`Batter,${b.rank},${b.player_id},"${b.player_name}",${b.overall_pri || b.bpri},${b.p_balls},${b.p_runs},${b.p_sr},${b.norm_sr},${b.delta_sr},${b.p_avg},${b.sample_confidence},-,-,-,-`);
+  });
+  top10Bowlers.forEach(b => {
+    rows.push(`Bowler,${b.rank},${b.player_id},"${b.player_name}",${b.overall_pri || b.bopri},${b.p_balls},-,-,-,-,${b.p_avg},${b.sample_confidence},${b.p_wkts},${b.p_econ},${b.norm_econ},${b.delta_econ}`);
+  });
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', 'attachment; filename="ROYAL_SCOUT_PRESSURE_RANKINGS.csv"');
+  res.send(rows.join('\n'));
 });
 
 // Serve frontend production build if available
@@ -546,9 +606,13 @@ if (fs.existsSync(DIST_DIR)) {
       res.sendFile(path.join(DIST_DIR, 'index.html'));
     }
   });
-  console.log(`[ROYAL SCOUT AI] Serving frontend production build from ${DIST_DIR}`);
 }
 
-app.listen(PORT, () => {
-  console.log(`[ROYAL SCOUT AI] Backend server running on http://localhost:${PORT}`);
-});
+// Export Express app for Vercel Serverless Function deployment
+module.exports = app;
+
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[ROYAL SCOUT AI] Backend server running on http://localhost:${PORT}`);
+  });
+}
