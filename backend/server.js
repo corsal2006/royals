@@ -48,6 +48,25 @@ try {
     image_verified: true
   }));
 
+  // Enrich top10Batters and top10Bowlers with uniform player_id, player_name, image_url
+  top10Batters = top10Batters.map(b => enrichPlayer({
+    ...b,
+    player_id: b.striker_id,
+    player_name: b.striker_name,
+    overall_pri: b.bpri,
+    primary_role: 'Batter'
+  }));
+
+  top10Bowlers = top10Bowlers.map(b => enrichPlayer({
+    ...b,
+    player_id: b.bowler_id,
+    player_name: b.bowler_name,
+    overall_pri: b.bopri,
+    primary_role: 'Bowler'
+  }));
+
+  allRounders = allRounders.map(a => enrichPlayer(a));
+
   console.log(`[ROYAL SCOUT AI] Loaded ${Object.keys(playersMaster).length} player records & ${Object.keys(playerImages).length} verified photos.`);
 } catch (err) {
   console.error('[ROYAL SCOUT AI] Error loading dataset files:', err.message);
@@ -323,24 +342,28 @@ app.get('/api/rankings/clutch', (req, res) => {
   const deathBatters = allPlayers
     .filter(p => p.batting && p.batting.death_p_sr && p.batting.p_balls >= 60)
     .sort((a, b) => (b.batting.death_p_sr || 0) - (a.batting.death_p_sr || 0))
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(enrichPlayer);
 
   const deathBowlers = allPlayers
     .filter(p => p.bowling && p.bowling.death_p_econ && p.bowling.p_balls >= 60)
     .sort((a, b) => (a.bowling.death_p_econ || 99) - (b.bowling.death_p_econ || 99))
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(enrichPlayer);
 
   // 2. Chase Closer Specialists (Innings 2 High Pressure)
   const chaseClosers = allPlayers
     .filter(p => p.batting && p.batting.chase_p_sr && p.batting.p_balls >= 60)
     .sort((a, b) => (b.batting.chase_p_sr || 0) - (a.batting.chase_p_sr || 0))
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(enrichPlayer);
 
   // 3. Crisis Stabilizers (High average under pressure)
   const crisisAnchors = allPlayers
     .filter(p => p.batting && p.batting.p_avg >= 30.0 && p.batting.p_balls >= 60)
     .sort((a, b) => (b.batting.p_avg || 0) - (a.batting.p_avg || 0))
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(enrichPlayer);
 
   res.json({
     death_batters: deathBatters,

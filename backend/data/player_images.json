@@ -290,8 +290,8 @@
     "player_name": "Liam Dawson",
     "image_url": "/players/722.jpg",
     "local_image": "/players/722.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official ICC Player Portrait"
   },
   "728": {
     "player_id": 728,
@@ -969,7 +969,7 @@
     "image_url": "/players/2490.jpg",
     "local_image": "/players/2490.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official ICC Player Portrait"
   },
   "2523": {
     "player_id": 2523,
@@ -1495,8 +1495,8 @@
     "player_name": "Sharafuddin Ashraf",
     "image_url": "/players/3550.jpg",
     "local_image": "/players/3550.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official ICC Player Portrait"
   },
   "3578": {
     "player_id": 3578,
@@ -3106,8 +3106,8 @@
     "player_name": "Hasan Mahmud",
     "image_url": "/players/6643.jpg",
     "local_image": "/players/6643.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official ICC Player Portrait"
   },
   "6644": {
     "player_id": 6644,

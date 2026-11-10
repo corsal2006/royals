@@ -14658,7 +14658,9 @@
     "risk_factor": "",
     "metadata_source": "Official Data Pack + Verified Public Registry",
     "retrieval_date": "2026-11-10",
-    "overall_pri": 46.89
+    "overall_pri": 46.89,
+    "image_url": "/players/2490.jpg",
+    "local_image": "/players/2490.jpg"
   },
   "2523": {
     "player_id": 2523,

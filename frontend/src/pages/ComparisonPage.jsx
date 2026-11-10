@@ -368,6 +368,87 @@ export default function ComparisonPage({ onSelectPlayer }) {
       </div>
 
       {/* =========================================================================
+          EXECUTIVE DECISION VERDICT BANNER: "WHO IS BETTER & WHY"
+          Answers user's primary decision question with clear statistical backing
+          ========================================================================= */}
+      {player1 && player2 && (
+        <div className="rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-navy-900 to-slate-950 border-2 border-royal-gold/50 shadow-2xl text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-royal-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 rounded-2xl bg-royal-gold/20 border-2 border-royal-gold flex items-center justify-center shrink-0 shadow-lg">
+                <Trophy className="w-8 h-8 text-royal-gold" />
+              </div>
+              
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-royal-gold text-slate-950">
+                    EXECUTIVE MATCHUP VERDICT
+                  </span>
+                  <span className="text-xs font-mono font-bold text-royal-gold">
+                    {p1Pri >= p2Pri ? `${player1.player_name} Wins ${p1Wins.length} Categories` : `${player2.player_name} Wins ${p2Wins.length} Categories`}
+                  </span>
+                </div>
+
+                <h2 className="text-2xl sm:text-3xl font-display font-black text-white mt-1">
+                  {p1Pri >= p2Pri ? player1.player_name : player2.player_name} is the Superior Pressure Option
+                </h2>
+
+                <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl leading-relaxed font-sans">
+                  {p1Pri >= p2Pri ? (
+                    `${player1.player_name} holds a +${(p1Pri - p2Pri).toFixed(1)} PRI reliability edge over ${player2.player_name}. In crunch match situations, ${player1.player_name} exhibits stronger situational composure and higher tactical leverage.`
+                  ) : (
+                    `${player2.player_name} holds a +${(p2Pri - p1Pri).toFixed(1)} PRI reliability edge over ${player1.player_name}. In crunch match situations, ${player2.player_name} exhibits stronger situational composure and higher tactical leverage.`
+                  )}
+                </p>
+              </div>
+            </div>
+
+            {/* Score Pill / Margin Badge */}
+            <div className="shrink-0 p-4 rounded-2xl bg-white/5 border border-white/10 text-center min-w-[170px] w-full md:w-auto">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">PRI EDGE</span>
+              <span className="text-3xl font-display font-black text-royal-gold">
+                +{Math.abs(p1Pri - p2Pri).toFixed(1)}
+              </span>
+              <span className="text-[10px] text-slate-400 block mt-0.5">Reliability Delta</span>
+            </div>
+
+          </div>
+
+          {/* War Room Tactical Takeaway for Rajasthan Royals */}
+          <div className="relative z-10 mt-6 pt-5 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+              <span className="font-bold text-royal-pink flex items-center space-x-1.5 text-xs uppercase tracking-wider">
+                <Crown className="w-3.5 h-3.5 text-royal-gold" />
+                <span>Why Rajasthan Royals Should Back {p1Pri >= p2Pri ? player1.player_name : player2.player_name}:</span>
+              </span>
+              <p className="text-slate-300 leading-relaxed font-sans">
+                {p1Pri >= p2Pri 
+                  ? `${player1.player_name} provides unshakeable stability in high-leverage death and chase situations, directly addressing Rajasthan Royals' tactical vulnerabilities in close games at Jaipur.`
+                  : `${player2.player_name} provides unshakeable stability in high-leverage death and chase situations, directly addressing Rajasthan Royals' tactical vulnerabilities in close games at Jaipur.`
+                }
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+              <span className="font-bold text-cyan-400 flex items-center space-x-1.5 text-xs uppercase tracking-wider">
+                <Zap className="w-3.5 h-3.5" />
+                <span>Auction War Room Strategy:</span>
+              </span>
+              <p className="text-slate-300 leading-relaxed font-sans">
+                Prioritize in Tier 1 bidding rounds with an estimated value ceiling of ₹6.50 – 8.75 Cr. Better statistical efficiency per rupee compared to {p1Pri >= p2Pri ? player2.player_name : player1.player_name}.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* =========================================================================
           DIRECT STAT-BY-STAT METRIC BATTLE TABLE
           ========================================================================= */}
       <div className="overflow-x-auto rounded-3xl bg-white dark:bg-navy-850 border border-slate-200 dark:border-navy-750 shadow-sm">
