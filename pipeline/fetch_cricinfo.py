@@ -15,3 +15,4 @@ try:
                 print("Candidate:", img)
 except Exception as e:
     print("Error:", e)
+

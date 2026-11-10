@@ -171,3 +171,4 @@ def batch_fetch_photos():
 
 if __name__ == '__main__':
     batch_fetch_photos()
+

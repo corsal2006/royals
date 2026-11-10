@@ -33,6 +33,7 @@ export default function BattersPage({ onSelectPlayer }) {
   const [country, setCountry] = useState('ALL');
   const [sortBy, setSortBy] = useState('bpri');
   const [order, setOrder] = useState('desc');
+  const [top10Only, setTop10Only] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -46,6 +47,9 @@ export default function BattersPage({ onSelectPlayer }) {
         setLoading(false);
       });
   }, [minBalls, country, search, sortBy, order]);
+
+  // Slice for top 10 if active
+  const displayedBatters = top10Only ? batters.slice(0, 10) : batters;
 
   // Scatter plot points: Normal SR vs Pressure SR
   const scatterData = batters.slice(0, 40).map(b => ({
@@ -184,6 +188,19 @@ export default function BattersPage({ onSelectPlayer }) {
 
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
+          {/* Top 10 Toggle */}
+          <button
+            onClick={() => setTop10Only(!top10Only)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center space-x-1.5 ${
+              top10Only
+                ? 'bg-royal-pink text-white border-royal-pink shadow-royal-glow'
+                : 'bg-slate-100 dark:bg-navy-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-navy-750 hover:border-royal-pink'
+            }`}
+          >
+            <Crown className="w-3.5 h-3.5 text-royal-gold" />
+            <span>{top10Only ? 'Showing Top 10 Batters' : 'Filter Top 10 Batters'}</span>
+          </button>
+
           {/* Min balls slider */}
           <div className="flex items-center space-x-2 bg-slate-100 dark:bg-navy-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-navy-750 text-xs">
             <span className="text-slate-500 dark:text-slate-400">Min Balls:</span>
@@ -248,7 +265,7 @@ export default function BattersPage({ onSelectPlayer }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-            {batters.map((b) => (
+            {displayedBatters.map((b) => (
               <tr key={b.player_id} className="hover:bg-slate-50 dark:hover:bg-navy-800/60 transition-colors group">
                 <td className="py-3.5 px-4">
                   <div className="flex items-center space-x-2.5">

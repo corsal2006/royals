@@ -22,9 +22,14 @@ import SituationSimulator from '../components/SituationSimulator';
 import PlayerImage from '../components/PlayerImage';
 
 export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTab }) {
+  const [showAll10, setShowAll10] = useState(true);
   const stats = overviewData?.stats || {};
-  const topBatters = overviewData?.top10_batters?.slice(0, 5) || [];
-  const topBowlers = overviewData?.top10_bowlers?.slice(0, 5) || [];
+  const topBatters = showAll10 
+    ? (overviewData?.top10_batters || []) 
+    : (overviewData?.top10_batters?.slice(0, 5) || []);
+  const topBowlers = showAll10 
+    ? (overviewData?.top10_bowlers || []) 
+    : (overviewData?.top10_bowlers?.slice(0, 5) || []);
 
   // Curated spotlight of leading pressure performers across departments
   const marqueeLeaders = [
@@ -242,8 +247,43 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
       {/* Interactive Match Situation Simulator */}
       <SituationSimulator />
 
-      {/* Top Batters & Bowlers Preview Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Top 10 Batters & Top 10 Bowlers Pressure Rankings */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-navy-750">
+          <div>
+            <span className="text-xs uppercase font-bold text-royal-pink tracking-widest block">
+              Official Pressure Reliability Rankings
+            </span>
+            <h2 className="text-xl sm:text-2xl font-display font-black text-slate-900 dark:text-white">
+              Top 10 Batters & Top 10 Bowlers Under Pressure
+            </h2>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setShowAll10(true)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                showAll10
+                  ? 'bg-royal-pink text-white shadow-sm'
+                  : 'bg-slate-100 dark:bg-navy-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Top 10 (Full Rankings)
+            </button>
+            <button
+              onClick={() => setShowAll10(false)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                !showAll10
+                  ? 'bg-royal-pink text-white shadow-sm'
+                  : 'bg-slate-100 dark:bg-navy-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Top 5 (Compact)
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Top Batters */}
         <div className="royal-glass-card rounded-2xl p-6 border border-slate-200 dark:border-navy-700 shadow-sm space-y-4 bg-white dark:bg-navy-850">
@@ -251,7 +291,7 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
             <div className="flex items-center space-x-2">
               <Flame className="w-5 h-5 text-royal-pink" />
               <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
-                Top Batters Under Pressure (BPRI)
+                {showAll10 ? 'Top 10' : 'Top 5'} Batters Under Pressure (BPRI)
               </h3>
             </div>
             <button
@@ -314,7 +354,7 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
             <div className="flex items-center space-x-2">
               <Crosshair className="w-5 h-5 text-royal-blue dark:text-royal-cyan" />
               <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white">
-                Top Bowlers Under Pressure (BoPRI)
+                {showAll10 ? 'Top 10' : 'Top 5'} Bowlers Under Pressure (BoPRI)
               </h3>
             </div>
             <button
@@ -372,6 +412,7 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
         </div>
 
       </div>
+    </div>
 
       {/* Rajasthan Royals Auction Decision Support Teaser */}
       <div className="p-8 rounded-3xl bg-gradient-to-r from-royal-pink/15 via-slate-100 to-royal-blue/10 dark:from-royal-pink/20 dark:via-navy-850 dark:to-navy-900 border border-royal-pink/30 shadow-lg relative overflow-hidden">

@@ -34,6 +34,7 @@ export default function BowlersPage({ onSelectPlayer }) {
   const [type, setType] = useState('ALL'); // Pace / Spin
   const [sortBy, setSortBy] = useState('bopri');
   const [order, setOrder] = useState('desc');
+  const [top10Only, setTop10Only] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -47,6 +48,9 @@ export default function BowlersPage({ onSelectPlayer }) {
         setLoading(false);
       });
   }, [minBalls, country, type, search, sortBy, order]);
+
+  // Slice for top 10 if active
+  const displayedBowlers = top10Only ? bowlers.slice(0, 10) : bowlers;
 
   // Scatter data: Normal Economy vs Pressure Economy
   const scatterData = bowlers.slice(0, 40).map(b => ({
@@ -181,6 +185,19 @@ export default function BowlersPage({ onSelectPlayer }) {
 
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
+          {/* Top 10 Toggle */}
+          <button
+            onClick={() => setTop10Only(!top10Only)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center space-x-1.5 ${
+              top10Only
+                ? 'bg-royal-blue text-white border-royal-blue shadow-sm'
+                : 'bg-slate-100 dark:bg-navy-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-navy-750 hover:border-royal-blue'
+            }`}
+          >
+            <Crown className="w-3.5 h-3.5 text-royal-gold" />
+            <span>{top10Only ? 'Showing Top 10 Bowlers' : 'Filter Top 10 Bowlers'}</span>
+          </button>
+
           {/* Min balls */}
           <div className="flex items-center space-x-2 bg-slate-100 dark:bg-navy-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-navy-750 text-xs">
             <span className="text-slate-500 dark:text-slate-400">Min Balls:</span>
@@ -256,7 +273,7 @@ export default function BowlersPage({ onSelectPlayer }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-            {bowlers.map((b) => (
+            {displayedBowlers.map((b) => (
               <tr key={b.player_id} className="hover:bg-slate-50 dark:hover:bg-navy-800/60 transition-colors group">
                 <td className="py-3.5 px-4">
                   <div className="flex items-center space-x-2.5">
