@@ -184,7 +184,7 @@ export default function AllRoundersPage({ onSelectPlayer }) {
                 <tr key={ar.player_id} className="hover:bg-slate-50 dark:hover:bg-navy-800/60 transition-colors group">
                   <td className="py-3.5 px-4">
                     <div className="flex items-center space-x-3">
-                      <PlayerImage player={ar} name={ar.player_name} size="sm" />
+                      <PlayerImage playerId={ar.player_id} player={ar} name={ar.player_name} size="sm" />
                       <div>
                         <div className="font-bold text-slate-900 dark:text-white group-hover:text-royal-pink dark:group-hover:text-royal-gold transition-colors">
                           {ar.player_name}

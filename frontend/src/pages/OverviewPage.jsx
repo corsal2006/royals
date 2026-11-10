@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import SituationSimulator from '../components/SituationSimulator';
 import PlayerImage from '../components/PlayerImage';
+import FifaPlayerCard from '../components/FifaPlayerCard';
 
 export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTab }) {
   const [showAll10, setShowAll10] = useState(true);
@@ -189,58 +190,31 @@ export default function OverviewPage({ overviewData, onSelectPlayer, setActiveTa
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {marqueeLeaders.map(player => (
-            <div
-              key={player.id}
-              onClick={() => onSelectPlayer && onSelectPlayer(player.id)}
-              className="cursor-pointer p-5 rounded-2xl bg-white dark:bg-navy-850 hover:border-royal-pink/50 border border-slate-200 dark:border-navy-750 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between space-y-4 group"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <PlayerImage
-                    playerId={player.id}
-                    name={player.name}
-                    role={player.role}
-                    size="md"
-                    showBadge={true}
-                  />
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 dark:bg-navy-750 text-slate-700 dark:text-slate-300 inline-block mb-1">
-                      {player.tag}
-                    </span>
-                    <h3 className="font-display font-bold text-sm text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors leading-tight">
-                      {player.name}
-                    </h3>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
-                      {player.role}
-                    </span>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {marqueeLeaders.map(m => {
+            const playerObj = {
+              player_id: m.id,
+              player_name: m.name,
+              primary_role: m.role,
+              current_team: m.team,
+              country: m.id === 8661 ? 'Sri Lanka' : 'India',
+              overall_pri: m.pri,
+              image_url: `/players/${m.id}.jpg`,
+              batting: m.id === 4708 ? { p_runs: 934, p_sr: 172.3, p_avg: 44.5, delta_sr: 45.2, p_bound_pct: 23.8, p_balls: 542 } :
+                       m.id === 37052 ? { p_runs: 488, p_sr: 201.6, p_avg: 32.5, delta_sr: 57.7, p_bound_pct: 26.5, p_balls: 242 } : null,
+              bowling: m.id === 3644 ? { p_wkts: 36, p_econ: 6.51, p_dot_pct: 46.2, p_bound_prev: 86.4, death_p_econ: 7.20, p_sr: 11.2, p_balls: 350 } :
+                       m.id === 8661 ? { p_wkts: 44, p_econ: 8.47, p_dot_pct: 42.5, p_bound_prev: 81.2, death_p_econ: 8.29, p_sr: 10.2, p_balls: 400 } : null
+            };
 
-                <div className="text-right">
-                  <span className="font-display font-black text-lg text-royal-pink font-mono block leading-none">
-                    {player.pri}
-                  </span>
-                  <span className="text-[9px] uppercase font-bold text-slate-400 block mt-1">
-                    PRI Index
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-navy-900 border border-slate-100 dark:border-navy-800 text-xs">
-                <span className="text-[10px] text-slate-400 block uppercase font-bold">Key Pressure Metric</span>
-                <span className="font-bold text-slate-800 dark:text-slate-200 mt-0.5 block">{player.highlight}</span>
-              </div>
-
-              <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100 dark:border-navy-750">
-                <span className="text-slate-400 text-[11px]">{player.team}</span>
-                <span className="text-royal-pink font-bold group-hover:translate-x-1 transition-transform inline-flex items-center text-xs">
-                  Inspect &rarr;
-                </span>
-              </div>
-            </div>
-          ))}
+            return (
+              <FifaPlayerCard
+                key={m.id}
+                player={playerObj}
+                onSelect={onSelectPlayer}
+                onCompare={() => setActiveTab('compare')}
+              />
+            );
+          })}
         </div>
       </div>
 

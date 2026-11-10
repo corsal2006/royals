@@ -80,7 +80,7 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer, theme,
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full royal-glass border-b border-slate-200 dark:border-navy-700 shadow-sm transition-colors duration-200">
+    <header className="sticky top-0 z-50 w-full bg-white dark:bg-navy-950 border-b border-slate-200 dark:border-navy-800 shadow-sm transition-colors duration-200">
       
       {/* Top Brand Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,7 +220,7 @@ export default function Navbar({ activeTab, setActiveTab, onSelectPlayer, theme,
       </div>
 
       {/* Desktop Navigation Items */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-navy-800 overflow-x-auto no-scrollbar hidden md:block">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 dark:border-navy-800 bg-white dark:bg-navy-950 overflow-x-auto no-scrollbar hidden md:block">
         <nav className="flex space-x-1 py-1.5 min-w-max">
           {navItems.map((item) => {
             const Icon = item.icon;

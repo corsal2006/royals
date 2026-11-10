@@ -172,7 +172,10 @@ export default function ScoutingAssistant({ onSelectPlayer }) {
                           >
                             <div className="flex items-center space-x-2.5 min-w-0">
                               <PlayerImage 
-                                player={p}
+                                playerId={pid}
+                                name={p.player_name || p.name}
+                                imageUrl={p.image_url || (pid ? `/players/${pid}.jpg` : null)}
+                                role={p.primary_role || p.role || p.category}
                                 size="sm"
                               />
                               <div className="truncate">

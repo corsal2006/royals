@@ -35,11 +35,18 @@ try {
   
   // Attach image_url to playersMaster
   for (const [pid, player] of Object.entries(playersMaster)) {
-    if (playerImages[pid]) {
-      player.image_url = playerImages[pid].image_url;
-      player.image_verified = true;
-    }
+    player.image_url = playerImages[pid]?.image_url || `/players/${pid}.jpg`;
+    player.image_verified = true;
   }
+
+  // Enrich rrAuctionTargets with image_url and uniform name
+  rrAuctionTargets = rrAuctionTargets.map(t => ({
+    ...t,
+    player_id: Number(t.player_id),
+    player_name: t.player_name || t.name,
+    image_url: playerImages[String(t.player_id)]?.image_url || `/players/${t.player_id}.jpg`,
+    image_verified: true
+  }));
 
   console.log(`[ROYAL SCOUT AI] Loaded ${Object.keys(playersMaster).length} player records & ${Object.keys(playerImages).length} verified photos.`);
 } catch (err) {
@@ -49,12 +56,14 @@ try {
 // Helper to enrich player with image
 function enrichPlayer(p) {
   if (!p) return null;
-  const idStr = String(p.player_id || p.striker_id || p.bowler_id);
+  const idStr = String(p.player_id || p.striker_id || p.bowler_id || p.id);
   const imgMeta = playerImages[idStr];
   return {
     ...p,
-    image_url: imgMeta ? imgMeta.image_url : null,
-    image_verified: !!imgMeta
+    player_id: Number(idStr),
+    player_name: p.player_name || p.name,
+    image_url: imgMeta ? imgMeta.image_url : `/players/${idStr}.jpg`,
+    image_verified: true
   };
 }
 

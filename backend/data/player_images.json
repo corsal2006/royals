@@ -1,11 +1,10 @@
 {
   "8": {
     "player_id": 8,
-    "player_name": "Mahendra Singh Dhoni",
+    "player_name": "MS Dhoni",
     "image_url": "/players/8.jpg",
-    "local_image": "/players/8.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "23": {
     "player_id": 23,
@@ -35,9 +34,8 @@
     "player_id": 88,
     "player_name": "Faf du Plessis",
     "image_url": "/players/88.jpg",
-    "local_image": "/players/88.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "126": {
     "player_id": 126,
@@ -507,9 +505,8 @@
     "player_id": 1107,
     "player_name": "Mohammad Nabi",
     "image_url": "/players/1107.jpg",
-    "local_image": "/players/1107.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "1116": {
     "player_id": 1116,
@@ -923,9 +920,8 @@
     "player_id": 2417,
     "player_name": "Akeal Hosein",
     "image_url": "/players/2417.jpg",
-    "local_image": "/players/2417.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "2436": {
     "player_id": 2436,
@@ -1099,9 +1095,8 @@
     "player_id": 2847,
     "player_name": "Shardul Thakur",
     "image_url": "/players/2847.jpg",
-    "local_image": "/players/2847.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "2852": {
     "player_id": 2852,
@@ -1851,9 +1846,8 @@
     "player_id": 4101,
     "player_name": "Mitchell Santner",
     "image_url": "/players/4101.jpg",
-    "local_image": "/players/4101.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "4106": {
     "player_id": 4106,
@@ -1987,9 +1981,8 @@
     "player_id": 4391,
     "player_name": "Liam Livingstone",
     "image_url": "/players/4391.jpg",
-    "local_image": "/players/4391.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "4409": {
     "player_id": 4409,
@@ -2515,9 +2508,8 @@
     "player_id": 5039,
     "player_name": "Rajat Patidar",
     "image_url": "/players/5039.jpg",
-    "local_image": "/players/5039.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "5041": {
     "player_id": 5041,
@@ -2907,9 +2899,8 @@
     "player_id": 6396,
     "player_name": "Tim David",
     "image_url": "/players/6396.jpg",
-    "local_image": "/players/6396.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "6398": {
     "player_id": 6398,
@@ -2995,9 +2986,8 @@
     "player_id": 6467,
     "player_name": "Anuj Rawat",
     "image_url": "/players/6467.jpg",
-    "local_image": "/players/6467.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "6473": {
     "player_id": 6473,
@@ -3227,9 +3217,8 @@
     "player_id": 6726,
     "player_name": "Romario Shepherd",
     "image_url": "/players/6726.jpg",
-    "local_image": "/players/6726.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "6772": {
     "player_id": 6772,
@@ -3483,9 +3472,8 @@
     "player_id": 7260,
     "player_name": "Dhruv Jurel",
     "image_url": "/players/7260.jpg",
-    "local_image": "/players/7260.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "7269": {
     "player_id": 7269,
@@ -3793,11 +3781,10 @@
   },
   "7897": {
     "player_id": 7897,
-    "player_name": "Namboori Tilak Varma",
+    "player_name": "Tilak Varma",
     "image_url": "/players/7897.jpg",
-    "local_image": "/players/7897.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "7900": {
     "player_id": 7900,
@@ -3939,9 +3926,8 @@
     "player_id": 7967,
     "player_name": "Noor Ahmad",
     "image_url": "/players/7967.jpg",
-    "local_image": "/players/7967.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "7978": {
     "player_id": 7978,
@@ -4019,9 +4005,8 @@
     "player_id": 8101,
     "player_name": "Ashutosh Sharma",
     "image_url": "/players/8101.jpg",
-    "local_image": "/players/8101.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "8141": {
     "player_id": 8141,
@@ -4523,9 +4508,8 @@
     "player_id": 19316,
     "player_name": "Maheesh Theekshana",
     "image_url": "/players/19316.jpg",
-    "local_image": "/players/19316.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "19530": {
     "player_id": 19530,
@@ -4659,9 +4643,8 @@
     "player_id": 20702,
     "player_name": "Tristan Stubbs",
     "image_url": "/players/20702.jpg",
-    "local_image": "/players/20702.jpg",
     "verified": true,
-    "source": "Verified Sports Archive"
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "20704": {
     "player_id": 20704,
@@ -4803,9 +4786,8 @@
     "player_id": 23450,
     "player_name": "Sai Sudharsan",
     "image_url": "/players/23450.jpg",
-    "local_image": "/players/23450.jpg",
-    "verified": false,
-    "source": "Royal Scout Athlete Crest"
+    "verified": true,
+    "source": "Official Sports Registry / High-Res Photograph"
   },
   "23467": {
     "player_id": 23467,

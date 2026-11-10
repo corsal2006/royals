@@ -274,7 +274,7 @@ export default function BattersPage({ onSelectPlayer }) {
                       name={b.player_name}
                       imageUrl={b.image_url}
                       role={b.primary_role}
-                      size="xs"
+                      size="sm"
                     />
                     <div>
                       <div className="font-bold text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors">

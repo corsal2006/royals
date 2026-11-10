@@ -20,11 +20,10 @@ export default function App() {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Dual-Theme System (Light & Dark Mode)
+  // Dual-Theme System (Light & Dark Mode) — strictly defaults to Light Mode
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('royal_scout_theme');
-    if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return saved || 'light';
   });
 
   useEffect(() => {

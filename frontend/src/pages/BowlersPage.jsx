@@ -282,7 +282,7 @@ export default function BowlersPage({ onSelectPlayer }) {
                       name={b.player_name}
                       imageUrl={b.image_url}
                       role={b.primary_role}
-                      size="xs"
+                      size="sm"
                     />
                     <div>
                       <div className="font-bold text-slate-900 dark:text-white group-hover:text-royal-blue dark:group-hover:text-blue-400 transition-colors">

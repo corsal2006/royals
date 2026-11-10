@@ -217,7 +217,7 @@ export default function AuctionPage({ onSelectPlayer }) {
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center space-x-3.5">
-                  <PlayerImage player={target} name={target.name} size="md" className="shadow-sm" />
+                  <PlayerImage playerId={target.player_id} player={target} name={target.name || target.player_name} size="md" className="shadow-sm" />
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="text-lg font-display font-black text-slate-900 dark:text-white group-hover:text-royal-pink transition-colors">
